@@ -1,7 +1,6 @@
 package dev.ghostbyte.fedisea.domain
 
 import jakarta.persistence.*
-import java.time.Instant
 import java.util.*
 
 @Entity
@@ -14,12 +13,14 @@ class Instance(
     @Column(nullable = false, unique = true)
     val domain: String,
 
-    val userCount: Long?,
-    val statusCount: Long?,
-    val peerCount: Long?,
-
     val software: String?,
-    val version: String?,
+    val software_version: String?,
 
-    val lastCrawledAt: Instant?
+    val open_registration: String,
+
+    val total_users: Long?,
+    val active_users_month: Long?,
+    val active_users_halfyear: Long?,
+    val local_posts: Long?,
+    val local_comments: Long?,
 )

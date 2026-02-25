@@ -5,9 +5,12 @@ import dev.ghostbyte.fedisea.dto.InstanceResponse
 
 fun Instance.toResponse() = InstanceResponse(
     domain = domain,
-    userCount = userCount,
-    statusCount = statusCount,
-    peerCount = peerCount,
     software = software,
-    version = version
+    version = software_version,
+    openRegistration = open_registration,
+    totalUsers = total_users,
+    activeUsersMonth = active_users_month,
+    activeUsersHalfyear = active_users_halfyear,
+    localPosts = local_posts,
+    localComments = local_comments
 )
