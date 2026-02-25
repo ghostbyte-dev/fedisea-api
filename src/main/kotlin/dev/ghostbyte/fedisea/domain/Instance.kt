@@ -4,12 +4,10 @@ import jakarta.persistence.*
 import java.util.*
 
 @Entity
-@Table(name = "instances")
+@Table(name = "instance")
 class Instance(
 
     @Id
-    val id: UUID,
-
     @Column(nullable = false, unique = true)
     val domain: String,
 

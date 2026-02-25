@@ -51,6 +51,3 @@ buildNumber.properties
 
 ### VS Code ###
 .vscode/
-
-
-.env
