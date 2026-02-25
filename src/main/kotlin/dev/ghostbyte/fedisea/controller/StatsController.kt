@@ -1,8 +1,11 @@
 package dev.ghostbyte.fedisea.controller
 
+import dev.ghostbyte.fedisea.dto.SoftwareDistributionResponse
 import dev.ghostbyte.fedisea.dto.StatsResponse
+import dev.ghostbyte.fedisea.dto.VersionDistributionResponse
 import dev.ghostbyte.fedisea.service.InstanceService
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -15,5 +18,17 @@ class StatsController(
     @GetMapping
     fun getStats(): StatsResponse {
         return service.getStats()
+    }
+
+    @GetMapping("/software")
+    fun getSoftwareDistribution(): List<SoftwareDistributionResponse> {
+        return service.getSoftwareDistribution()
+    }
+
+    @GetMapping("/software/{software}/versions")
+    fun getVersionDistribution(
+        @PathVariable software: String
+    ): List<VersionDistributionResponse> {
+        return service.getVersionDistribution(software)
     }
 }

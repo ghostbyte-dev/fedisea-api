@@ -1,11 +1,11 @@
 meta {
-  name: Get instance by domain
+  name: Get version distribution
   type: http
-  seq: 3
+  seq: 6
 }
 
 get {
-  url: {{baseurl}}/v1/instances/pixelfed.social
+  url: {{baseurl}}/v1/stats/software
   body: none
   auth: inherit
 }
