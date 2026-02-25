@@ -1,0 +1,16 @@
+meta {
+  name: Get stats
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseurl}}/v1/stats
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

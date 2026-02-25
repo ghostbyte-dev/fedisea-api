@@ -5,6 +5,7 @@ import dev.ghostbyte.fedisea.service.InstanceService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -19,5 +20,12 @@ class InstanceController(
         pageable: Pageable
     ): Page<InstanceResponse> {
         return service.getAll(pageable)
+    }
+
+    @GetMapping("/{domain}")
+    fun getInstanceByDomain(
+        @PathVariable domain: String
+    ): InstanceResponse {
+        return service.getByDomain(domain)
     }
 }

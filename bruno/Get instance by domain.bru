@@ -1,0 +1,16 @@
+meta {
+  name: Get instance by domain
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseurl}}/v1/instances/pixelix.social
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
