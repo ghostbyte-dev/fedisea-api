@@ -12,5 +12,9 @@ fun Instance.toResponse() = InstanceResponse(
     activeUsersMonth = active_users_month,
     activeUsersHalfyear = active_users_halfyear,
     localPosts = local_posts,
-    localComments = local_comments
+    localComments = local_comments,
+    title = title,
+    description = description,
+    sourceUrl = source_url,
+    thumbnail = thumbnail,
 )

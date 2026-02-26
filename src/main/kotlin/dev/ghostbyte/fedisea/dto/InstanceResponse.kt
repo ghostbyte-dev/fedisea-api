@@ -2,6 +2,10 @@ package dev.ghostbyte.fedisea.dto
 
 data class InstanceResponse(
     val domain: String,
+    val title: String?,
+    val description: String?,
+    val sourceUrl: String?,
+    val thumbnail: String?,
     val software: String?,
     val version: String?,
     val openRegistration: String?,

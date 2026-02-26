@@ -11,6 +11,12 @@ class Instance(
     @Column(nullable = false, unique = true)
     val domain: String,
 
+    val title: String?,
+    val description: String?,
+    val source_url: String?,
+    val thumbnail: String?,
+
+
     val software: String?,
     val software_version: String?,
 
