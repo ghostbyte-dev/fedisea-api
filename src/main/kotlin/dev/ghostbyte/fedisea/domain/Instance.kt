@@ -16,9 +16,13 @@ class Instance(
 
     val open_registration: String,
 
-    val total_users: Long?,
+    @Column(name = "total_users")
+    val totalUsers: Long?,
     val active_users_month: Long?,
     val active_users_halfyear: Long?,
     val local_posts: Long?,
     val local_comments: Long?,
+
+    @Enumerated(EnumType.STRING)
+    val status: InstanceStatus?,
 )

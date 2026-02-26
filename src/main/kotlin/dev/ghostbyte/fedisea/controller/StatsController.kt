@@ -7,6 +7,7 @@ import dev.ghostbyte.fedisea.service.InstanceService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -21,8 +22,10 @@ class StatsController(
     }
 
     @GetMapping("/software")
-    fun getSoftwareDistribution(): List<SoftwareDistributionResponse> {
-        return service.getSoftwareDistribution()
+    fun getSoftwareDistribution(
+        @RequestParam(required = false) limit: Int?
+    ): List<SoftwareDistributionResponse> {
+        return service.getSoftwareDistribution(limit)
     }
 
     @GetMapping("/software/{software}/versions")

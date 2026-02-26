@@ -1,6 +1,7 @@
 package dev.ghostbyte.fedisea.service
 
 
+import dev.ghostbyte.fedisea.domain.InstanceStatus
 import dev.ghostbyte.fedisea.dto.InstanceResponse
 import dev.ghostbyte.fedisea.dto.SoftwareDistributionResponse
 import dev.ghostbyte.fedisea.dto.StatsResponse
@@ -19,7 +20,7 @@ class InstanceService(
 
     @Transactional(readOnly = true)
     fun getAll(pageable: Pageable): Page<InstanceResponse> {
-        return repository.findAll(pageable)
+        return repository.findAllByStatus(InstanceStatus.ACTIVE, pageable)
             .map { it.toResponse() }
     }
 
@@ -32,20 +33,21 @@ class InstanceService(
 
     @Transactional(readOnly = true)
     fun getStats(): StatsResponse {
-        val count = repository.count()
+        val count = repository.countByStatus(InstanceStatus.ACTIVE)
         val userCount = repository.sumTotalUsers() ?: 0L
 
         return StatsResponse(totalInstances = count, totalUsers = userCount)
     }
 
+    // In dev.ghostbyte.fedisea.service.InstanceService
     @Transactional(readOnly = true)
-    fun getSoftwareDistribution(): List<SoftwareDistributionResponse> {
+    fun getSoftwareDistribution(limit: Int?): List<SoftwareDistributionResponse> {
         val rawData = repository.countGroupBySoftware()
-        val totalInstances = repository.count().toDouble()
+        val totalInstances = repository.countByStatus(InstanceStatus.ACTIVE).toDouble()
 
         if (totalInstances == 0.0) return emptyList()
 
-        return rawData.map { row ->
+        val distribution = rawData.map { row ->
             val name = row[0] as? String ?: "Unknown"
             val count = row[1] as Long
             val percentage = (count / totalInstances) * 100
@@ -53,15 +55,22 @@ class InstanceService(
             SoftwareDistributionResponse(
                 software = name,
                 count = count,
-                percentage = Math.round(percentage * 100.0) / 100.0 // Round to 2 decimal places
+                percentage = Math.round(percentage * 100.0) / 100.0
             )
-        }.sortedByDescending { it.count } // Sort by most popular first
+        }.sortedByDescending { it.count }
+
+        // Apply the limit if provided, otherwise return the full list
+        return if (limit != null) {
+            distribution.take(limit)
+        } else {
+            distribution
+        }
     }
 
     @Transactional(readOnly = true)
     fun getVersionDistribution(software: String): List<VersionDistributionResponse> {
         val rawData = repository.countGroupByVersionForSoftware(software)
-        val totalForSoftware = repository.countBySoftware(software).toDouble()
+        val totalForSoftware = repository.countBySoftwareAndStatus(software, InstanceStatus.ACTIVE).toDouble()
 
         if (totalForSoftware == 0.0) return emptyList()
 
