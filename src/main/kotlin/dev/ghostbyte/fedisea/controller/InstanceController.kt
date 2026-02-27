@@ -22,7 +22,7 @@ class InstanceController(
     @GetMapping
     fun getInstances(
         @RequestParam(defaultValue = "20") size: Int,
-        @RequestParam(defaultValue = "totalUsers") sortBy: String,
+        @RequestParam(defaultValue = "activeUsersMonth") sortBy: String,
         @RequestParam(defaultValue = "desc") direction: String,
         @RequestParam(defaultValue = "0") page: Int
     ): PaginatedResponse<InstanceResponse> {

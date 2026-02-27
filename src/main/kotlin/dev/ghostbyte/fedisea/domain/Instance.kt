@@ -24,8 +24,10 @@ class Instance(
 
     @Column(name = "total_users")
     val totalUsers: Long?,
-    val active_users_month: Long?,
-    val active_users_halfyear: Long?,
+    @Column(name = "active_users_month")
+    val activeUsersMonth: Long?,
+    @Column(name = "active_users_halfyear")
+    val activeUsersHalfyear: Long?,
     val local_posts: Long?,
     val local_comments: Long?,
 

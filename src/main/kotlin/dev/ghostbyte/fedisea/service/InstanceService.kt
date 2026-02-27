@@ -20,7 +20,7 @@ class InstanceService(
 
     @Transactional(readOnly = true)
     fun getAll(pageable: Pageable): Page<InstanceResponse> {
-        return repository.findAllByStatus(InstanceStatus.ACTIVE, pageable)
+        return repository.findAllByStatusAndSoftwareNot(InstanceStatus.ACTIVE, "gotosocial",pageable)
             .map { it.toResponse() }
     }
 

@@ -11,6 +11,12 @@ interface InstanceRepository : JpaRepository<Instance, String> {
 
     fun findAllByStatus(status: InstanceStatus, pageable: Pageable): Page<Instance>
 
+    fun findAllByStatusAndSoftwareNot(
+        status: InstanceStatus,
+        software: String,
+        pageable: Pageable
+    ): Page<Instance>
+
     @Query("SELECT SUM(i.totalUsers) FROM Instance i WHERE i.status = dev.ghostbyte.fedisea.domain.InstanceStatus.ACTIVE")
     fun sumTotalUsers(): Long?
 
