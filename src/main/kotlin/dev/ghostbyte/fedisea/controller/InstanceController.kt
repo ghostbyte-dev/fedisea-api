@@ -21,10 +21,12 @@ class InstanceController(
 
     @GetMapping
     fun getInstances(
+        @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "20") size: Int,
         @RequestParam(defaultValue = "activeUsersMonth") sortBy: String,
         @RequestParam(defaultValue = "desc") direction: String,
-        @RequestParam(defaultValue = "0") page: Int
+        @RequestParam(defaultValue = "") search: String,
+        @RequestParam(defaultValue = "") software: String
     ): PaginatedResponse<InstanceResponse> {
         val sort = if (direction.equals("desc", ignoreCase = true)) {
             Sort.by(sortBy).descending()
@@ -34,7 +36,7 @@ class InstanceController(
 
         val pageable = PageRequest.of(page, size, sort)
 
-        val pageResult = service.getAll(pageable)
+        val pageResult = service.getAll(search, software, pageable)
         return PaginatedResponse.fromPage(pageResult)
     }
 

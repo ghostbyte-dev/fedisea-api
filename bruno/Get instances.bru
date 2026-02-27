@@ -5,9 +5,13 @@ meta {
 }
 
 get {
-  url: {{baseurl}}/v1/instances
+  url: {{baseurl}}/v1/instances?search=pixelix
   body: none
   auth: inherit
+}
+
+params:query {
+  search: pixelix
 }
 
 settings {

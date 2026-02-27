@@ -6,14 +6,22 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
 
 interface InstanceRepository : JpaRepository<Instance, String> {
 
     fun findAllByStatus(status: InstanceStatus, pageable: Pageable): Page<Instance>
 
-    fun findAllByStatusAndSoftwareNot(
-        status: InstanceStatus,
-        software: String,
+    @Query("""
+        SELECT i FROM Instance i 
+        WHERE i.status = dev.ghostbyte.fedisea.domain.InstanceStatus.ACTIVE 
+        AND i.software != 'gotosocial' 
+        AND (:search = '' OR LOWER(i.domain) LIKE LOWER(CONCAT('%', :search, '%')))
+        AND (:software = '' OR i.software = :software)
+    """)
+    fun searchActive(
+        @Param("search") search: String,
+        @Param("software") software: String,
         pageable: Pageable
     ): Page<Instance>
 

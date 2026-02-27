@@ -19,8 +19,8 @@ class InstanceService(
 ) {
 
     @Transactional(readOnly = true)
-    fun getAll(pageable: Pageable): Page<InstanceResponse> {
-        return repository.findAllByStatusAndSoftwareNot(InstanceStatus.ACTIVE, "gotosocial",pageable)
+    fun getAll(search: String, software: String, pageable: Pageable): Page<InstanceResponse> {
+        return repository.searchActive(search, software, pageable)
             .map { it.toResponse() }
     }
 
