@@ -1,0 +1,62 @@
+package dev.ghostbyte.fedisea.service.impl
+
+import dev.ghostbyte.fedisea.domain.InstanceStatus
+import dev.ghostbyte.fedisea.dto.SoftwareDistributionResponse
+import dev.ghostbyte.fedisea.dto.VersionDistributionResponse
+import dev.ghostbyte.fedisea.repository.InstanceRepository
+import dev.ghostbyte.fedisea.service.SoftwareService
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+
+@Service
+class SoftwareServiceImpl(
+    private val repository: InstanceRepository
+): SoftwareService {
+
+    @Transactional(readOnly = true)
+    override fun getSoftwareDistribution(limit: Int?): List<SoftwareDistributionResponse> {
+        val rawData = repository.countGroupBySoftware()
+        val totalInstances = repository.countByStatus(InstanceStatus.ACTIVE).toDouble()
+
+        if (totalInstances == 0.0) return emptyList()
+
+        val distribution = rawData.map { row ->
+            val name = row[0] as? String ?: "Unknown"
+            val count = row[1] as Long
+            val percentage = (count / totalInstances) * 100
+
+            SoftwareDistributionResponse(
+                software = name,
+                count = count,
+                percentage = Math.round(percentage * 100.0) / 100.0
+            )
+        }.sortedByDescending { it.count }
+
+        // Apply the limit if provided, otherwise return the full list
+        return if (limit != null) {
+            distribution.take(limit)
+        } else {
+            distribution
+        }
+    }
+
+    @Transactional(readOnly = true)
+    override fun getVersionDistribution(software: String): List<VersionDistributionResponse> {
+        val rawData = repository.countGroupByVersionForSoftware(software)
+        val totalForSoftware = repository.countBySoftwareAndStatus(software, InstanceStatus.ACTIVE).toDouble()
+
+        if (totalForSoftware == 0.0) return emptyList()
+
+        return rawData.map { row ->
+            val version = row[0] as? String ?: "Unknown"
+            val count = row[1] as Long
+            val percentage = (count / totalForSoftware) * 100
+
+            VersionDistributionResponse(
+                version = version,
+                count = count,
+                percentage = Math.round(percentage * 100.0) / 100.0
+            )
+        }.sortedByDescending { it.count }
+    }
+}

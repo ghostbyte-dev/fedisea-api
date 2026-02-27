@@ -21,17 +21,5 @@ class StatsController(
         return service.getStats()
     }
 
-    @GetMapping("/software")
-    fun getSoftwareDistribution(
-        @RequestParam(required = false) limit: Int?
-    ): List<SoftwareDistributionResponse> {
-        return service.getSoftwareDistribution(limit)
-    }
 
-    @GetMapping("/software/{software}/versions")
-    fun getVersionDistribution(
-        @PathVariable software: String
-    ): List<VersionDistributionResponse> {
-        return service.getVersionDistribution(software)
-    }
 }

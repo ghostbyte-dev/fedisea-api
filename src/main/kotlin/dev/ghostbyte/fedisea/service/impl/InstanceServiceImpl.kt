@@ -39,51 +39,5 @@ class InstanceServiceImpl(
         return StatsResponse(totalInstances = count, totalUsers = userCount)
     }
 
-    // In dev.ghostbyte.fedisea.service.InstanceService
-    @Transactional(readOnly = true)
-    override fun getSoftwareDistribution(limit: Int?): List<SoftwareDistributionResponse> {
-        val rawData = repository.countGroupBySoftware()
-        val totalInstances = repository.countByStatus(InstanceStatus.ACTIVE).toDouble()
 
-        if (totalInstances == 0.0) return emptyList()
-
-        val distribution = rawData.map { row ->
-            val name = row[0] as? String ?: "Unknown"
-            val count = row[1] as Long
-            val percentage = (count / totalInstances) * 100
-
-            SoftwareDistributionResponse(
-                software = name,
-                count = count,
-                percentage = Math.round(percentage * 100.0) / 100.0
-            )
-        }.sortedByDescending { it.count }
-
-        // Apply the limit if provided, otherwise return the full list
-        return if (limit != null) {
-            distribution.take(limit)
-        } else {
-            distribution
-        }
-    }
-
-    @Transactional(readOnly = true)
-    override fun getVersionDistribution(software: String): List<VersionDistributionResponse> {
-        val rawData = repository.countGroupByVersionForSoftware(software)
-        val totalForSoftware = repository.countBySoftwareAndStatus(software, InstanceStatus.ACTIVE).toDouble()
-
-        if (totalForSoftware == 0.0) return emptyList()
-
-        return rawData.map { row ->
-            val version = row[0] as? String ?: "Unknown"
-            val count = row[1] as Long
-            val percentage = (count / totalForSoftware) * 100
-
-            VersionDistributionResponse(
-                version = version,
-                count = count,
-                percentage = Math.round(percentage * 100.0) / 100.0
-            )
-        }.sortedByDescending { it.count }
-    }
 }
