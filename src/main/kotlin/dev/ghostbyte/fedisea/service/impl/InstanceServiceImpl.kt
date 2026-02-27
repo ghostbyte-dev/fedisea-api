@@ -5,6 +5,7 @@ import dev.ghostbyte.fedisea.dto.InstanceResponse
 import dev.ghostbyte.fedisea.dto.SoftwareDistributionResponse
 import dev.ghostbyte.fedisea.dto.StatsResponse
 import dev.ghostbyte.fedisea.dto.VersionDistributionResponse
+import dev.ghostbyte.fedisea.exception.ResourceNotFoundException
 import dev.ghostbyte.fedisea.mapper.toResponse
 import dev.ghostbyte.fedisea.repository.InstanceRepository
 import dev.ghostbyte.fedisea.service.InstanceService
@@ -28,7 +29,7 @@ class InstanceServiceImpl(
     override fun getByDomain(domain: String): InstanceResponse {
         return repository.findById(domain)
             .map { it.toResponse() }
-            .orElseThrow { NoSuchElementException("Instance with domain $domain not found") }
+            .orElseThrow { ResourceNotFoundException("Server", domain) }
     }
 
     @Transactional(readOnly = true)
@@ -39,7 +40,6 @@ class InstanceServiceImpl(
         return StatsResponse(totalInstances = count, totalUsers = userCount)
     }
 
-    // In dev.ghostbyte.fedisea.service.InstanceService
     @Transactional(readOnly = true)
     override fun getSoftwareDistribution(limit: Int?): List<SoftwareDistributionResponse> {
         val rawData = repository.countGroupBySoftware()

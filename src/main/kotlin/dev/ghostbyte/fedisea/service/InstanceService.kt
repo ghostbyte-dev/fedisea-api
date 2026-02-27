@@ -26,7 +26,7 @@ interface InstanceService {
      * Fetches detailed information for a specific instance by its domain name.
      *
      * @param domain The unique domain name of the instance (e.g., "mastodon.social").
-     * @throws NoSuchElementException If no instance is found with the given domain.
+     * @throws dev.ghostbyte.fedisea.exception.ResourceNotFoundException If no instance is found with the given domain.
      * @return The [InstanceResponse] containing instance details.
      */
     fun getByDomain(domain: String): InstanceResponse
