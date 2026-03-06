@@ -1,11 +1,9 @@
 package dev.ghostbyte.fedisea.controller
 
-import dev.ghostbyte.fedisea.dto.InstanceResponse
+import dev.ghostbyte.fedisea.dto.InstanceDto
 import dev.ghostbyte.fedisea.dto.PaginatedResponse
 import dev.ghostbyte.fedisea.service.InstanceService
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -27,7 +25,7 @@ class InstanceController(
         @RequestParam(defaultValue = "desc") order: String,
         @RequestParam(defaultValue = "") search: String,
         @RequestParam(defaultValue = "") software: String
-    ): PaginatedResponse<InstanceResponse> {
+    ): PaginatedResponse<InstanceDto> {
         val sort = if (order.equals("desc", ignoreCase = true)) {
             Sort.by(sort).descending()
         } else {
@@ -43,7 +41,7 @@ class InstanceController(
     @GetMapping("/{domain}")
     fun getInstanceByDomain(
         @PathVariable domain: String
-    ): InstanceResponse {
+    ): InstanceDto {
         return service.getByDomain(domain)
     }
 }

@@ -36,13 +36,15 @@ interface InstanceRepository : JpaRepository<Instance, String> {
     """)
     fun countGroupBySoftware(): List<Array<Any>>
 
-    @Query("""
-        SELECT i.software_version, COUNT(i) 
+    @Query(
+        """
+        SELECT i.softwareVersion, COUNT(i) 
         FROM Instance i 
         WHERE i.software = :software 
         AND i.status = dev.ghostbyte.fedisea.domain.InstanceStatus.ACTIVE 
-        GROUP BY i.software_version
-    """)
+        GROUP BY i.softwareVersion
+    """
+    )
     fun countGroupByVersionForSoftware(software: String): List<Array<Any>>
 
     fun countBySoftwareAndStatus(software: String, status: InstanceStatus): Long

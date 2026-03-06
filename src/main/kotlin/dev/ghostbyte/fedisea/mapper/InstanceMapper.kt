@@ -1,20 +1,20 @@
 package dev.ghostbyte.fedisea.mapper
 
 import dev.ghostbyte.fedisea.domain.Instance
-import dev.ghostbyte.fedisea.dto.InstanceResponse
+import dev.ghostbyte.fedisea.dto.InstanceDto
 
-fun Instance.toResponse() = InstanceResponse(
+fun Instance.toDto() = InstanceDto(
     domain = domain,
     software = software,
-    version = software_version,
-    openRegistration = open_registration,
+    version = softwareVersion,
+    openRegistration = openRegistration,
     totalUsers = totalUsers,
     activeUsersMonth = activeUsersMonth,
     activeUsersHalfyear = activeUsersHalfyear,
-    localPosts = local_posts,
-    localComments = local_comments,
+    localPosts = localPosts,
+    localComments = localComments,
     title = title,
     description = description,
-    sourceUrl = source_url,
+    sourceUrl = sourceUrl,
     thumbnail = thumbnail,
 )

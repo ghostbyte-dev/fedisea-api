@@ -1,12 +1,10 @@
 package dev.ghostbyte.fedisea.service.impl
 
 import dev.ghostbyte.fedisea.domain.InstanceStatus
-import dev.ghostbyte.fedisea.dto.InstanceResponse
-import dev.ghostbyte.fedisea.dto.SoftwareDistributionResponse
+import dev.ghostbyte.fedisea.dto.InstanceDto
 import dev.ghostbyte.fedisea.dto.StatsResponse
-import dev.ghostbyte.fedisea.dto.VersionDistributionResponse
 import dev.ghostbyte.fedisea.exception.ResourceNotFoundException
-import dev.ghostbyte.fedisea.mapper.toResponse
+import dev.ghostbyte.fedisea.mapper.toDto
 import dev.ghostbyte.fedisea.repository.InstanceRepository
 import dev.ghostbyte.fedisea.service.InstanceService
 import org.springframework.data.domain.Page
@@ -20,15 +18,15 @@ class InstanceServiceImpl(
 ): InstanceService {
 
     @Transactional(readOnly = true)
-    override fun getAll(search: String, software: String, pageable: Pageable): Page<InstanceResponse> {
+    override fun getAll(search: String, software: String, pageable: Pageable): Page<InstanceDto> {
         return repository.searchActive(search, software, pageable)
-            .map { it.toResponse() }
+            .map { it.toDto() }
     }
 
     @Transactional(readOnly = true)
-    override fun getByDomain(domain: String): InstanceResponse {
+    override fun getByDomain(domain: String): InstanceDto {
         return repository.findById(domain)
-            .map { it.toResponse() }
+            .map { it.toDto() }
             .orElseThrow { ResourceNotFoundException("Server", domain) }
     }
 

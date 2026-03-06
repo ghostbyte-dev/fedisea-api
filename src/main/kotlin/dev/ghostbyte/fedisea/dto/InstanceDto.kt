@@ -1,6 +1,6 @@
 package dev.ghostbyte.fedisea.dto
 
-data class InstanceResponse(
+data class InstanceDto(
     val domain: String,
     val title: String?,
     val description: String?,
@@ -8,7 +8,7 @@ data class InstanceResponse(
     val thumbnail: String?,
     val software: String?,
     val version: String?,
-    val openRegistration: String?,
+    val openRegistration: Boolean?,
     val totalUsers: Long?,
     val activeUsersMonth: Long?,
     val activeUsersHalfyear: Long?,
