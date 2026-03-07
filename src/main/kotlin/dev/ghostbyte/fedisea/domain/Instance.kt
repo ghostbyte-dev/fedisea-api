@@ -17,6 +17,7 @@ class Instance(
     val sourceUrl: String?,
     val thumbnail: String?,
     val software: String?,
+    val email: String?,
     @Column(name = "software_version")
     val softwareVersion: String?,
     @Column(name = "open_registration")
