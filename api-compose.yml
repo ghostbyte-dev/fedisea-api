@@ -1,12 +1,13 @@
 services:
   fedisea-api:
-    image: fedisea-api
+    image: ghcr.io/ghostbyte-dev/fedisea-api:latest
     ports:
       - "8080:8080"
     env_file:
       - .env
     networks:
       - fedisea-network
+    restart: always
 
 networks:
   fedisea-network:
