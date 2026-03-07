@@ -1,0 +1,21 @@
+services:
+  fedisea_db:
+    image: postgres:15-alpine
+    container_name: fedisea_db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - fedisea-network
+
+volumes:
+  postgres_data:
+
+networks:
+  fedisea-network:
+    external: true

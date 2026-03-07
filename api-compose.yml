@@ -1,0 +1,13 @@
+services:
+  fedisea-api:
+    image: fedisea-api
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    networks:
+      - fedisea-network
+
+networks:
+  fedisea-network:
+    external: true
