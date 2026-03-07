@@ -1,6 +1,7 @@
 package dev.ghostbyte.fedisea.controller
 
 import dev.ghostbyte.fedisea.dto.InstanceDto
+import dev.ghostbyte.fedisea.dto.InstanceSort
 import dev.ghostbyte.fedisea.dto.PaginatedResponse
 import dev.ghostbyte.fedisea.service.InstanceService
 import org.springframework.data.domain.PageRequest
@@ -21,18 +22,21 @@ class InstanceController(
     fun getInstances(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "20") size: Int,
-        @RequestParam(defaultValue = "activeUsersMonth") sort: String,
+        @RequestParam(defaultValue = "users") sort: String,
         @RequestParam(defaultValue = "desc") order: String,
         @RequestParam(defaultValue = "") search: String,
         @RequestParam(defaultValue = "") software: String
     ): PaginatedResponse<InstanceDto> {
-        val sort = if (order.equals("desc", ignoreCase = true)) {
-            Sort.by(sort).descending()
+
+        val sortType = InstanceSort.fromString(sort)
+
+        val sortOrder = if (order.equals("desc", ignoreCase = true)) {
+            Sort.by(sortType.databaseField).descending()
         } else {
-            Sort.by(sort).ascending()
+            Sort.by(sortType.databaseField).ascending()
         }
 
-        val pageable = PageRequest.of(page, size, sort)
+        val pageable = PageRequest.of(page, size, sortOrder)
 
         val pageResult = service.getAll(search, software, pageable)
         return PaginatedResponse.fromPage(pageResult)
