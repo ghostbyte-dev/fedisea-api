@@ -14,5 +14,8 @@ class Software(
     val website: String? = null,
     @Column(name = "soure_code")
     val sourceCode: String? = null,
-
+    val description: String? = null,
+    val licence: String? = null,
+    @Column(name = "join_url")
+    val joinUrl: String? = null,
 )
