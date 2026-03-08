@@ -41,7 +41,7 @@ class SoftwareServiceImpl(
                 joinUrl = it.joinUrl,
                 licence = it.licence,
                 description = it.description,
-                iconUrl = "https://assets.fedisea.surf/" + it.iconName
+                iconUrl = "https://assets.fedisea.surf/logos/" + it.iconName
             )
         }
     }
@@ -64,7 +64,7 @@ class SoftwareServiceImpl(
             joinUrl = projection.joinUrl,
             licence = projection.licence,
             description = projection.description,
-            iconUrl = "https://assets.fedisea.surf/" + projection.iconName
+            iconUrl = "https://assets.fedisea.surf/logos/" + projection.iconName
         )
     }
 
@@ -119,7 +119,7 @@ class SoftwareServiceImpl(
 
     override fun uploadFile(identifier: String, file: MultipartFile): String {
         val iconPath = "/app/icons/logos"
-        val baseUrl = "https://assets.fedisea.surf"
+        val baseUrl = "https://assets.fedisea.surf/logos"
         if (file.isEmpty) throw Exception("empty file")
 
         val rootPath = Paths.get(iconPath)
