@@ -7,6 +7,7 @@ import dev.ghostbyte.fedisea.dto.SoftwareResponse
 import dev.ghostbyte.fedisea.dto.VersionDistributionResponse
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.web.multipart.MultipartFile
 
 /**
  * Service for managing and retrieving information about Fediverse software.
@@ -47,4 +48,13 @@ interface SoftwareService {
      * @return A list of [VersionDistributionResponse] items showing version popularity.
      */
     fun getVersionDistribution(software: String, pageable: Pageable): Page<VersionDistributionResponse>
+
+    /**
+     * Upload icon
+     *
+     * @param identifier The identifier of the software
+     * @param file The icon file of type [org.springframework.web.multipart.MultipartFile]
+     *
+     */
+    fun uploadFile(identifier: String, file: MultipartFile): String
 }

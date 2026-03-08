@@ -10,11 +10,15 @@ import dev.ghostbyte.fedisea.service.SoftwareService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @RequestMapping("/v1/software")
@@ -64,5 +68,13 @@ class SoftwareController(
     @GetMapping("/{software}")
     fun getSoftware(@PathVariable software: String): SoftwareResponse {
         return service.getByIdentifier(software)
+    }
+
+    @PostMapping("/{identifier}/icon", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    fun uploadIcon(
+        @PathVariable identifier: String,
+        @RequestParam("file") file: MultipartFile
+    ): String {
+        return service.uploadFile(identifier, file)
     }
 }

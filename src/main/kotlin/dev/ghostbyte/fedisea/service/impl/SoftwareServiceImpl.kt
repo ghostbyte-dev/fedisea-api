@@ -12,6 +12,11 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.multipart.MultipartFile
+import java.nio.file.Files
+import java.nio.file.Files.copy
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
 
 @Service
 class SoftwareServiceImpl(
@@ -92,5 +97,28 @@ class SoftwareServiceImpl(
                 percentage = Math.round(percentage * 100.0) / 100.0
             )
         }
+    }
+
+    override fun uploadFile(identifier: String, file: MultipartFile): String {
+        val iconPath = "/app/icons"
+        val baseUrl = "https://files.fedisea.surf"
+        if (file.isEmpty) throw Exception("empty file")
+
+        // 1. Ensure the directory exists
+        val rootPath = Paths.get(iconPath)
+        if (!Files.exists(rootPath)) Files.createDirectories(rootPath)
+
+        // 2. Extract extension and create safe filename (e.g., mastodon.png)
+        val extension = file.originalFilename?.substringAfterLast(".", "png") ?: "png"
+        val fileName = "$identifier.$extension"
+        val destinationPath = rootPath.resolve(fileName)
+
+        file.inputStream.use { input ->
+            Files.copy(input, destinationPath, StandardCopyOption.REPLACE_EXISTING)
+        }
+
+        // 4. Return the new public URL
+        val fileUrl = "$baseUrl/$fileName"
+        return fileUrl
     }
 }
