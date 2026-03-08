@@ -7,8 +7,25 @@ services:
       - .env
     networks:
       - fedisea-network
+      - proxy-network
+    volumes:
+      - fedisea_icons:/app/icons
     restart: always
+
+  icon-server:
+    image: nginx:alpine
+    container_name: icon-server
+    volumes:
+      - fedisea_icons:/usr/share/nginx/html:ro
+    networks:
+      - proxy-network
+
+volumes:
+  fedisea_icons:
+    driver: local
 
 networks:
   fedisea-network:
+    external: true
+  proxy-network:
     external: true

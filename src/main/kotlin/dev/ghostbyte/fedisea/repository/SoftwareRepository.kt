@@ -19,6 +19,9 @@ interface SoftwareRepository : JpaRepository<Instance, String> {
             MAX(s.name) as name,
             MAX(s.website) as website,
             MAX(s.sourceCode) as sourceCode,
+            MAX(s.description) as description,
+            MAX(s.licence) as licence,
+            MAX(s.joinUrl) as joinUrl,
             COUNT(i) as instances,
             Sum(i.activeUsersHalfyear) as activeUsersHalfyear,
             sum(i.activeUsersMonth) as activeUsersMonth,
@@ -37,7 +40,9 @@ interface SoftwareRepository : JpaRepository<Instance, String> {
     ): Page<SoftwareProjection>?
 
     @Query("""
-        SELECT s.identifier, MAX(s.name), MAX(s.website), MAX(s.sourceCode), COUNT(i), Sum(i.activeUsersHalfyear), sum(i.activeUsersMonth), sum(i.totalUsers), sum(i.localPosts), sum(i.localComments)
+        SELECT s.identifier, MAX(s.name), MAX(s.website), MAX(s.sourceCode),            MAX(s.description) as description,
+            MAX(s.licence) as licence,
+            MAX(s.joinUrl) as joinUrl, COUNT(i), Sum(i.activeUsersHalfyear), sum(i.activeUsersMonth), sum(i.totalUsers), sum(i.localPosts), sum(i.localComments)
 	    FROM Software s 
 	    LEFT JOIN Instance i ON s.identifier = i.software 
 		    AND i.status = dev.ghostbyte.fedisea.domain.InstanceStatus.ACTIVE 

@@ -5,6 +5,9 @@ interface SoftwareProjection {
     val name: String
     val website: String?
     val sourceCode: String?
+    val description: String?
+    val licence: String?
+    val joinUrl: String?
     val instances: Long?
     val activeUsersHalfyear: Long?
     val activeUsersMonth: Long?

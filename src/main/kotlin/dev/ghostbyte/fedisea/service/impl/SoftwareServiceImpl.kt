@@ -32,7 +32,10 @@ class SoftwareServiceImpl(
                 activeUsersHalfyear = it.activeUsersHalfyear,
                 totalUsers = it.totalUsers,
                 localPosts = it.localPosts,
-                localComments = it.localComments
+                localComments = it.localComments,
+                joinUrl = it.joinUrl,
+                licence = it.licence,
+                description = it.description
             )
         }
     }
