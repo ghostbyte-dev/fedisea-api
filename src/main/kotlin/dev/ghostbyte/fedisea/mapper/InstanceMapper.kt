@@ -2,6 +2,7 @@ package dev.ghostbyte.fedisea.mapper
 
 import dev.ghostbyte.fedisea.domain.Instance
 import dev.ghostbyte.fedisea.dto.InstanceDto
+import dev.ghostbyte.fedisea.repository.projection.InstanceProjection
 
 fun Instance.toDto() = InstanceDto(
     domain = domain,
@@ -17,4 +18,24 @@ fun Instance.toDto() = InstanceDto(
     description = description,
     sourceUrl = sourceUrl,
     thumbnail = thumbnail,
+    softwareIconUrl = null
+)
+
+fun InstanceProjection.toDto() = InstanceDto(
+    domain = instance.domain,
+    software = instance.software,
+    version = instance.softwareVersion,
+    openRegistration = instance.openRegistration,
+    totalUsers = instance.totalUsers,
+    activeUsersMonth = instance.activeUsersMonth,
+    activeUsersHalfyear = instance.activeUsersHalfyear,
+    localPosts = instance.localPosts,
+    localComments = instance.localComments,
+    title = instance.title,
+    description = instance.description,
+    sourceUrl = instance.sourceUrl,
+    thumbnail = instance.thumbnail,
+    softwareIconUrl = if (iconName != null) {
+        "https://assets.fedisea.net/$iconName"
+    } else {null},
 )

@@ -2,6 +2,7 @@ package dev.ghostbyte.fedisea.repository
 
 import dev.ghostbyte.fedisea.domain.Instance
 import dev.ghostbyte.fedisea.domain.InstanceStatus
+import dev.ghostbyte.fedisea.repository.projection.InstanceProjection
 import dev.ghostbyte.fedisea.repository.projection.VersionProjection
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -10,11 +11,18 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
 interface InstanceRepository : JpaRepository<Instance, String> {
+    @Query("""
+        SELECT i as instance, s.iconName as iconName FROM Instance i
+        JOIN Software s on s.identifier = i.software
+        WHERE i.domain = :domain
+    """)
+    fun findByIdWithSoftwareIcon(@Param("domain") domain: String): InstanceProjection?
 
     fun findAllByStatus(status: InstanceStatus, pageable: Pageable): Page<Instance>
 
     @Query("""
-        SELECT i FROM Instance i 
+        SELECT i as instance, s.iconName as iconName FROM Instance i 
+        JOIN Software s on s.identifier = i.software
         WHERE i.status = dev.ghostbyte.fedisea.domain.InstanceStatus.ACTIVE 
         AND i.software != 'gotosocial' 
         AND (:search = '' OR LOWER(i.domain) LIKE LOWER(CONCAT('%', :search, '%')))
@@ -24,7 +32,7 @@ interface InstanceRepository : JpaRepository<Instance, String> {
         @Param("search") search: String,
         @Param("software") software: String,
         pageable: Pageable
-    ): Page<Instance>
+    ): Page<InstanceProjection>
 
     @Query("SELECT SUM(i.totalUsers) FROM Instance i WHERE i.status = dev.ghostbyte.fedisea.domain.InstanceStatus.ACTIVE")
     fun sumTotalUsers(): Long?
