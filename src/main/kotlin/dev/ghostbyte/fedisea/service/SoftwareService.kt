@@ -1,12 +1,27 @@
 package dev.ghostbyte.fedisea.service
 
+import dev.ghostbyte.fedisea.dto.InstanceDto
 import dev.ghostbyte.fedisea.dto.SoftwareDistributionResponse
+import dev.ghostbyte.fedisea.dto.SoftwareResponse
 import dev.ghostbyte.fedisea.dto.VersionDistributionResponse
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 
 /**
  * Service for managing and retrieving information about Fediverse software.
  */
 interface SoftwareService {
+
+    /**
+     * Get all software
+     *
+     * @param search A partial domain name to filter by (case-insensitive).
+     * @param pageable Pagination and sorting information.
+     *
+     * @return A [Page] of [SoftwareResponse] objects.
+     *
+     */
+    fun getAll(search: String, pageable: Pageable): Page<SoftwareResponse>
 
     /**
      * Analyzes the distribution of different software types across the network.

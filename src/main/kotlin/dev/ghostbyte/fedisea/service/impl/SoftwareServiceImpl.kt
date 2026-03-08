@@ -2,16 +2,25 @@ package dev.ghostbyte.fedisea.service.impl
 
 import dev.ghostbyte.fedisea.domain.InstanceStatus
 import dev.ghostbyte.fedisea.dto.SoftwareDistributionResponse
+import dev.ghostbyte.fedisea.dto.SoftwareResponse
 import dev.ghostbyte.fedisea.dto.VersionDistributionResponse
+import dev.ghostbyte.fedisea.mapper.toResponse
 import dev.ghostbyte.fedisea.repository.InstanceRepository
+import dev.ghostbyte.fedisea.repository.SoftwareRepository
 import dev.ghostbyte.fedisea.service.SoftwareService
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class SoftwareServiceImpl(
-    private val repository: InstanceRepository
+    private val repository: InstanceRepository,
+    private val softwareRepository: SoftwareRepository
 ): SoftwareService {
+    override fun getAll(search: String, pageable: Pageable): Page<SoftwareResponse> {
+        return softwareRepository.search(search, pageable).map { it.toResponse() }
+    }
 
     @Transactional(readOnly = true)
     override fun getSoftwareDistribution(limit: Int?): List<SoftwareDistributionResponse> {

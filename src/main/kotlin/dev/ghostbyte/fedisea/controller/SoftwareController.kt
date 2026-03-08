@@ -1,8 +1,11 @@
 package dev.ghostbyte.fedisea.controller
 
+import dev.ghostbyte.fedisea.dto.PaginatedResponse
 import dev.ghostbyte.fedisea.dto.SoftwareDistributionResponse
+import dev.ghostbyte.fedisea.dto.SoftwareResponse
 import dev.ghostbyte.fedisea.dto.VersionDistributionResponse
 import dev.ghostbyte.fedisea.service.SoftwareService
+import org.springframework.data.domain.PageRequest
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -27,5 +30,17 @@ class SoftwareController(
         @PathVariable software: String
     ): List<VersionDistributionResponse> {
         return service.getVersionDistribution(software)
+    }
+
+    @GetMapping()
+    fun getAllSoftware(
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = "20") size: Int,
+        @RequestParam(defaultValue = "") search: String,
+        ): PaginatedResponse<SoftwareResponse> {
+        val pageable = PageRequest.of(page, size)
+
+        val pageResult = service.getAll(search, pageable)
+        return PaginatedResponse.fromPage(pageResult)
     }
 }
