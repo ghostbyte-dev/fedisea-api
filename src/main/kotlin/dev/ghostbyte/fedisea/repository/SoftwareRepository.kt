@@ -11,11 +11,15 @@ import org.springframework.data.repository.query.Param
 
 interface SoftwareRepository : JpaRepository<Instance, String> {
     @Query("""
-        SELECT s FROM Software s 
+        SELECT s.identifier, MAX(s.name), MAX(s.website), MAX(s.sourceCode), COUNT(i) as instances, Sum(i.activeUsersHalfyear) as activeUsersHalfyear, sum(i.activeUsersMonth) as activeUsersMonth, sum(i.totalUsers) as totalUsers, sum(i.localPosts) as localPosts, sum(i.localComments) as localComments
+        FROM Software s 
+        LEFT JOIN Instance i ON s.identifier = i.software 
+        AND i.status = 'ACTIVE'
         WHERE (:search = '' OR LOWER(s.name) LIKE LOWER(CONCAT('%', :search, '%')))
+        GROUP BY s.identifier
     """)
     fun search(
         @Param("search") search: String,
         pageable: Pageable
-    ): Page<Software>
+    ): Page<Array<Any>>
 }

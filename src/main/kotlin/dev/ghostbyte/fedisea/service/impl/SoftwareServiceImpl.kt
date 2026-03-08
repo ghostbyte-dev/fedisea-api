@@ -4,7 +4,6 @@ import dev.ghostbyte.fedisea.domain.InstanceStatus
 import dev.ghostbyte.fedisea.dto.SoftwareDistributionResponse
 import dev.ghostbyte.fedisea.dto.SoftwareResponse
 import dev.ghostbyte.fedisea.dto.VersionDistributionResponse
-import dev.ghostbyte.fedisea.mapper.toResponse
 import dev.ghostbyte.fedisea.repository.InstanceRepository
 import dev.ghostbyte.fedisea.repository.SoftwareRepository
 import dev.ghostbyte.fedisea.service.SoftwareService
@@ -19,7 +18,21 @@ class SoftwareServiceImpl(
     private val softwareRepository: SoftwareRepository
 ): SoftwareService {
     override fun getAll(search: String, pageable: Pageable): Page<SoftwareResponse> {
-        return softwareRepository.search(search, pageable).map { it.toResponse() }
+        return softwareRepository.search(search, pageable).map {
+            val softwareResponse = SoftwareResponse(
+                identifier = it[0] as String,
+                name = it[1] as String,
+                website = it[2] as String?,
+                sourceCode = it[3] as String?,
+                instances = (it[4] as Number?)?.toInt(),
+                activeUsersMonthly = it[5] as Long?,
+                activeUsersHalfyear = it[6] as Long?,
+                totalUsers = it[7] as Long?,
+                localPosts = it[8] as Long?,
+                localComments = it[9] as Long?
+            )
+            softwareResponse
+        }
     }
 
     @Transactional(readOnly = true)
