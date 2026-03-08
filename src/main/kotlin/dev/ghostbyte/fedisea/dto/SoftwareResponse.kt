@@ -5,7 +5,7 @@ data class SoftwareResponse(
     val name: String,
     val website: String?,
     val sourceCode: String?,
-    val instances: Int?,
+    val instances: Long?,
     val activeUsersHalfyear: Long?,
     val activeUsersMonthly: Long?,
     val totalUsers: Long?,

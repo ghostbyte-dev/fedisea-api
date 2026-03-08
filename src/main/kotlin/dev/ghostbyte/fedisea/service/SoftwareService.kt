@@ -24,6 +24,14 @@ interface SoftwareService {
     fun getAll(search: String, pageable: Pageable): Page<SoftwareResponse>
 
     /**
+     *
+     * @param identifier the identifier of the software
+     *
+     * @return A [SoftwareResponse] object
+     */
+    fun getByIdentifier(identifier: String): SoftwareResponse
+
+    /**
      * Analyzes the distribution of different software types across the network.
      *
      * @param limit The maximum number of software types to return, sorted by popularity.

@@ -4,6 +4,7 @@ import dev.ghostbyte.fedisea.domain.InstanceStatus
 import dev.ghostbyte.fedisea.dto.SoftwareDistributionResponse
 import dev.ghostbyte.fedisea.dto.SoftwareResponse
 import dev.ghostbyte.fedisea.dto.VersionDistributionResponse
+import dev.ghostbyte.fedisea.exception.ResourceNotFoundException
 import dev.ghostbyte.fedisea.repository.InstanceRepository
 import dev.ghostbyte.fedisea.repository.SoftwareRepository
 import dev.ghostbyte.fedisea.service.SoftwareService
@@ -16,23 +17,29 @@ import org.springframework.transaction.annotation.Transactional
 class SoftwareServiceImpl(
     private val repository: InstanceRepository,
     private val softwareRepository: SoftwareRepository
-): SoftwareService {
+) : SoftwareService {
     override fun getAll(search: String, pageable: Pageable): Page<SoftwareResponse> {
-        return softwareRepository.search(search, pageable).map {
-            val softwareResponse = SoftwareResponse(
-                identifier = it[0] as String,
-                name = it[1] as String,
-                website = it[2] as String?,
-                sourceCode = it[3] as String?,
-                instances = (it[4] as Number?)?.toInt(),
-                activeUsersMonthly = it[5] as Long?,
-                activeUsersHalfyear = it[6] as Long?,
-                totalUsers = it[7] as Long?,
-                localPosts = it[8] as Long?,
-                localComments = it[9] as Long?
+        val result =  softwareRepository.search(search, pageable) ?: throw ResourceNotFoundException("Software", search);
+
+        return result.map {
+            SoftwareResponse(
+                identifier = it.identifier,
+                name = it.name,
+                website = it.website,
+                sourceCode = it.sourceCode,
+                instances = it.instances,
+                activeUsersMonthly = it.activeUsersMonth,
+                activeUsersHalfyear = it.activeUsersHalfyear,
+                totalUsers = it.totalUsers,
+                localPosts = it.localPosts,
+                localComments = it.localComments
             )
-            softwareResponse
         }
+    }
+
+    override fun getByIdentifier(identifier: String): SoftwareResponse {
+        return softwareRepository.getByIdentifier(identifier)
+            ?: throw ResourceNotFoundException("Software", identifier)
     }
 
     @Transactional(readOnly = true)

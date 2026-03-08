@@ -56,4 +56,9 @@ class SoftwareController(
         val pageResult = service.getAll(search, pageable)
         return PaginatedResponse.fromPage(pageResult)
     }
+
+    @GetMapping("/{software}")
+    fun getSoftware(@PathVariable software: String): SoftwareResponse {
+        return service.getByIdentifier(software)
+    }
 }
