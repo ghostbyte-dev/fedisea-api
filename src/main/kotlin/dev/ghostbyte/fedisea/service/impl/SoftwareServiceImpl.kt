@@ -41,7 +41,7 @@ class SoftwareServiceImpl(
                 joinUrl = it.joinUrl,
                 licence = it.licence,
                 description = it.description,
-                iconUrl = "https://assets.fedisea.surf/logos/" + it.iconName
+                iconUrl = if (it.iconName != null) {"https://assets.fedisea.surf/logos/" + it.iconName} else {null}
             )
         }
     }
@@ -64,7 +64,7 @@ class SoftwareServiceImpl(
             joinUrl = projection.joinUrl,
             licence = projection.licence,
             description = projection.description,
-            iconUrl = "https://assets.fedisea.surf/logos/" + projection.iconName
+            iconUrl = if (projection.iconName != null) {"https://assets.fedisea.surf/logos/" + projection.iconName} else {null}
         )
     }
 
