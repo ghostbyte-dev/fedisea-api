@@ -101,23 +101,21 @@ class SoftwareServiceImpl(
 
     override fun uploadFile(identifier: String, file: MultipartFile): String {
         val iconPath = "/app/icons"
-        val baseUrl = "https://files.fedisea.surf"
+        val baseUrl = "https://assets.fedisea.surf"
         if (file.isEmpty) throw Exception("empty file")
 
-        // 1. Ensure the directory exists
         val rootPath = Paths.get(iconPath)
         if (!Files.exists(rootPath)) Files.createDirectories(rootPath)
 
-        // 2. Extract extension and create safe filename (e.g., mastodon.png)
         val extension = file.originalFilename?.substringAfterLast(".", "png") ?: "png"
         val fileName = "$identifier.$extension"
         val destinationPath = rootPath.resolve(fileName)
 
         file.inputStream.use { input ->
-            Files.copy(input, destinationPath, StandardCopyOption.REPLACE_EXISTING)
+            copy(input, destinationPath, StandardCopyOption.REPLACE_EXISTING)
         }
 
-        // 4. Return the new public URL
+        softwareRepository.updateIconUrl(identifier, fileName)
         val fileUrl = "$baseUrl/$fileName"
         return fileUrl
     }

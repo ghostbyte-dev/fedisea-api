@@ -5,15 +5,18 @@ import dev.ghostbyte.fedisea.domain.InstanceStatus
 import dev.ghostbyte.fedisea.domain.Software
 import dev.ghostbyte.fedisea.dto.SoftwareResponse
 import dev.ghostbyte.fedisea.repository.projection.SoftwareProjection
+import jakarta.transaction.Transactional
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import java.util.Optional
 
 interface SoftwareRepository : JpaRepository<Instance, String> {
-    @Query("""
+    @Query(
+        """
         SELECT 
             s.identifier as identifier,
             MAX(s.name) as name,
@@ -33,13 +36,15 @@ interface SoftwareRepository : JpaRepository<Instance, String> {
         AND i.status = 'ACTIVE'
         WHERE (:search = '' OR LOWER(s.name) LIKE LOWER(CONCAT('%', :search, '%')))
         GROUP BY s.identifier
-    """)
+    """
+    )
     fun search(
         @Param("search") search: String,
         pageable: Pageable
     ): Page<SoftwareProjection>?
 
-    @Query("""
+    @Query(
+        """
         SELECT s.identifier, MAX(s.name), MAX(s.website), MAX(s.sourceCode),            MAX(s.description) as description,
             MAX(s.licence) as licence,
             MAX(s.joinUrl) as joinUrl, COUNT(i), Sum(i.activeUsersHalfyear), sum(i.activeUsersMonth), sum(i.totalUsers), sum(i.localPosts), sum(i.localComments)
@@ -48,6 +53,12 @@ interface SoftwareRepository : JpaRepository<Instance, String> {
 		    AND i.status = dev.ghostbyte.fedisea.domain.InstanceStatus.ACTIVE 
 	    WHERE s.identifier = :search
 	    GROUP BY s.identifier
-""")
+"""
+    )
     fun getByIdentifier(@Param("search") search: String): SoftwareResponse?
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Software s SET s.iconUrl = :iconUrl WHERE s.identifier = :identifier")
+    fun updateIconUrl(@Param("identifier") identifier: String, @Param("iconUrl") iconUrl: String): Int
 }

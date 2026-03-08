@@ -18,4 +18,6 @@ class Software(
     val licence: String? = null,
     @Column(name = "join_url")
     val joinUrl: String? = null,
+    @Column(name = "icon_name")
+    val iconName: String? = null,
 )
