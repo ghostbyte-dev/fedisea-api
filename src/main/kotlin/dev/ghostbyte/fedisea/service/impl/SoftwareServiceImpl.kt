@@ -118,7 +118,7 @@ class SoftwareServiceImpl(
     }
 
     override fun uploadFile(identifier: String, file: MultipartFile): String {
-        val iconPath = "/app/icons"
+        val iconPath = "/app/icons/logos"
         val baseUrl = "https://assets.fedisea.surf"
         if (file.isEmpty) throw Exception("empty file")
 
