@@ -8,6 +8,7 @@ import dev.ghostbyte.fedisea.dto.SoftwareSort
 import dev.ghostbyte.fedisea.dto.VersionDistributionResponse
 import dev.ghostbyte.fedisea.service.SoftwareService
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -29,10 +30,13 @@ class SoftwareController(
     }
 
     @GetMapping("/{software}/versions")
-    fun getVersionDistribution(
-        @PathVariable software: String
-    ): List<VersionDistributionResponse> {
-        return service.getVersionDistribution(software)
+    fun getVersions(
+        @PathVariable software: String,
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = "20") size: Int,
+    ): PaginatedResponse<VersionDistributionResponse> {
+        val pageable = PageRequest.of(page, size)
+        return PaginatedResponse.fromPage(service.getVersionDistribution(software, pageable))
     }
 
     @GetMapping()

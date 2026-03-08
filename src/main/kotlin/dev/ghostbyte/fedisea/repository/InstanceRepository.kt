@@ -2,6 +2,7 @@ package dev.ghostbyte.fedisea.repository
 
 import dev.ghostbyte.fedisea.domain.Instance
 import dev.ghostbyte.fedisea.domain.InstanceStatus
+import dev.ghostbyte.fedisea.repository.projection.VersionProjection
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -40,13 +41,15 @@ interface InstanceRepository : JpaRepository<Instance, String> {
 
     @Query(
         """
-        SELECT i.softwareVersion, COUNT(i) 
+        SELECT i.softwareVersion as version, COUNT(i) as count 
         FROM Instance i 
         WHERE i.status = dev.ghostbyte.fedisea.domain.InstanceStatus.ACTIVE 
+        AND i.software = :software
         GROUP BY i.softwareVersion
+        ORDER BY COUNT(i) DESC
     """
     )
-    fun countGroupByVersionForSoftware(software: String): List<Array<Any>>
+    fun countGroupByVersionForSoftware(@Param("software") software: String, pageable: Pageable): Page<VersionProjection>
 
     fun countBySoftwareAndStatus(software: String, status: InstanceStatus): Long
 

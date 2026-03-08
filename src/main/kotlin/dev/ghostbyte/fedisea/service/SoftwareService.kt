@@ -1,6 +1,7 @@
 package dev.ghostbyte.fedisea.service
 
 import dev.ghostbyte.fedisea.dto.InstanceDto
+import dev.ghostbyte.fedisea.dto.PaginatedResponse
 import dev.ghostbyte.fedisea.dto.SoftwareDistributionResponse
 import dev.ghostbyte.fedisea.dto.SoftwareResponse
 import dev.ghostbyte.fedisea.dto.VersionDistributionResponse
@@ -45,5 +46,5 @@ interface SoftwareService {
      * @param software The software name to analyze (e.g., "lemmy").
      * @return A list of [VersionDistributionResponse] items showing version popularity.
      */
-    fun getVersionDistribution(software: String): List<VersionDistributionResponse>
+    fun getVersionDistribution(software: String, pageable: Pageable): Page<VersionDistributionResponse>
 }

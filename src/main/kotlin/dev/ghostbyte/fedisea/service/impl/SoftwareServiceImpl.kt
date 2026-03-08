@@ -72,15 +72,15 @@ class SoftwareServiceImpl(
     }
 
     @Transactional(readOnly = true)
-    override fun getVersionDistribution(software: String): List<VersionDistributionResponse> {
-        val rawData = repository.countGroupByVersionForSoftware(software)
+    override fun getVersionDistribution(software: String, pageable: Pageable): Page<VersionDistributionResponse> {
+        val versionProjections = repository.countGroupByVersionForSoftware(software, pageable)
         val totalForSoftware = repository.countBySoftwareAndStatus(software, InstanceStatus.ACTIVE).toDouble()
 
-        if (totalForSoftware == 0.0) return emptyList()
+        if (totalForSoftware == 0.0) return Page.empty()
 
-        return rawData.map { row ->
-            val version = row[0] as? String ?: "Unknown"
-            val count = row[1] as Long
+        return versionProjections.map { versionProjection ->
+            val version = versionProjection.version ?: "Unknown"
+            val count = versionProjection.count
             val percentage = (count / totalForSoftware) * 100
 
             VersionDistributionResponse(
@@ -88,6 +88,6 @@ class SoftwareServiceImpl(
                 count = count,
                 percentage = Math.round(percentage * 100.0) / 100.0
             )
-        }.sortedByDescending { it.count }
+        }
     }
 }
