@@ -59,6 +59,6 @@ interface SoftwareRepository : JpaRepository<Instance, String> {
 
     @Modifying
     @Transactional
-    @Query("UPDATE Software s SET s.iconUrl = :iconUrl WHERE s.identifier = :identifier")
+    @Query("UPDATE Software s SET s.iconName = :iconUrl WHERE s.identifier = :identifier")
     fun updateIconUrl(@Param("identifier") identifier: String, @Param("iconUrl") iconUrl: String): Int
 }
