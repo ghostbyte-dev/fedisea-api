@@ -14,5 +14,5 @@ data class InstanceDto(
     val activeUsersHalfyear: Long?,
     val localPosts: Long?,
     val localComments: Long?,
-    val softwareIconUrl: String?
+    val softwareLogoUrl: String?
 )

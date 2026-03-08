@@ -18,7 +18,7 @@ fun Instance.toDto() = InstanceDto(
     description = description,
     sourceUrl = sourceUrl,
     thumbnail = thumbnail,
-    softwareIconUrl = null
+    softwareLogoUrl = null
 )
 
 fun InstanceProjection.toDto() = InstanceDto(
@@ -35,7 +35,7 @@ fun InstanceProjection.toDto() = InstanceDto(
     description = instance.description,
     sourceUrl = instance.sourceUrl,
     thumbnail = instance.thumbnail,
-    softwareIconUrl = if (iconName != null) {
+    softwareLogoUrl = if (iconName != null) {
         "https://assets.fedisea.net/$iconName"
     } else {null},
 )
