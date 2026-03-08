@@ -4,12 +4,21 @@ meta {
   seq: 7
 }
 
-get {
-  url: 
-  body: none
+post {
+  url: {{baseurl}}/v1/software/:instance/icon
+  body: multipartForm
   auth: inherit
+}
+
+params:path {
+  instance: pixelfed
+}
+
+body:multipart-form {
+  file: 
 }
 
 settings {
   encodeUrl: true
+  timeout: 0
 }
