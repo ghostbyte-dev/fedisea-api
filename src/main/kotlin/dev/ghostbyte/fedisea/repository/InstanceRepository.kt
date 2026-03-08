@@ -29,10 +29,12 @@ interface InstanceRepository : JpaRepository<Instance, String> {
     fun sumTotalUsers(): Long?
 
     @Query("""
-        SELECT i.software, COUNT(i) 
-        FROM Instance i 
-        WHERE i.status = dev.ghostbyte.fedisea.domain.InstanceStatus.ACTIVE 
-        GROUP BY i.software
+        SELECT i.software, s.name, COUNT(i) 
+        FROM Instance i
+        LEFT JOIN Software s ON i.software = s.identifier
+        WHERE i.status = 'ACTIVE' 
+        GROUP BY i.software, s.name
+        ORDER BY COUNT(i) DESC
     """)
     fun countGroupBySoftware(): List<Array<Any>>
 
@@ -40,8 +42,7 @@ interface InstanceRepository : JpaRepository<Instance, String> {
         """
         SELECT i.softwareVersion, COUNT(i) 
         FROM Instance i 
-        WHERE i.software = :software 
-        AND i.status = dev.ghostbyte.fedisea.domain.InstanceStatus.ACTIVE 
+        WHERE i.status = dev.ghostbyte.fedisea.domain.InstanceStatus.ACTIVE 
         GROUP BY i.softwareVersion
     """
     )

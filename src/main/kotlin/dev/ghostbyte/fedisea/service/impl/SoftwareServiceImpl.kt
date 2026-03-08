@@ -21,16 +21,18 @@ class SoftwareServiceImpl(
         if (totalInstances == 0.0) return emptyList()
 
         val distribution = rawData.map { row ->
-            val name = row[0] as? String ?: "Unknown"
-            val count = row[1] as Long
+            val software = row[0] as? String ?: "Unknown"
+            val softwareName = row[1] as String?
+            val count = row[2] as Long
             val percentage = (count / totalInstances) * 100
 
             SoftwareDistributionResponse(
-                software = name,
+                software = software,
+                name = softwareName,
                 count = count,
                 percentage = Math.round(percentage * 100.0) / 100.0
             )
-        }.sortedByDescending { it.count }
+        }
 
         // Apply the limit if provided, otherwise return the full list
         return if (limit != null) {
