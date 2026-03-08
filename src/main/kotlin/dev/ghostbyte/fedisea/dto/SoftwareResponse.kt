@@ -14,4 +14,5 @@ data class SoftwareResponse(
     val totalUsers: Long?,
     val localPosts: Long?,
     val localComments: Long?,
+    val iconUrl: String?,
 )

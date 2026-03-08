@@ -25,6 +25,7 @@ interface SoftwareRepository : JpaRepository<Instance, String> {
             MAX(s.description) as description,
             MAX(s.licence) as licence,
             MAX(s.joinUrl) as joinUrl,
+            MAX(s.iconName) as iconName,
             COUNT(i) as instances,
             Sum(i.activeUsersHalfyear) as activeUsersHalfyear,
             sum(i.activeUsersMonth) as activeUsersMonth,
@@ -45,9 +46,21 @@ interface SoftwareRepository : JpaRepository<Instance, String> {
 
     @Query(
         """
-        SELECT s.identifier, MAX(s.name), MAX(s.website), MAX(s.sourceCode),            MAX(s.description) as description,
+        SELECT 
+            s.identifier as identifier,
+            MAX(s.name) as name,
+            MAX(s.website) as website,
+            MAX(s.sourceCode) as sourceCode,
+            MAX(s.description) as description,
             MAX(s.licence) as licence,
-            MAX(s.joinUrl) as joinUrl, COUNT(i), Sum(i.activeUsersHalfyear), sum(i.activeUsersMonth), sum(i.totalUsers), sum(i.localPosts), sum(i.localComments)
+            MAX(s.joinUrl) as joinUrl,
+            MAX(s.iconName) as iconName,
+            COUNT(i) as instances,
+            Sum(i.activeUsersHalfyear) as activeUsersHalfyear,
+            sum(i.activeUsersMonth) as activeUsersMonth,
+            sum(i.totalUsers) as totalUsers,
+            sum(i.localPosts) as localPosts,
+            sum(i.localComments) as localComments
 	    FROM Software s 
 	    LEFT JOIN Instance i ON s.identifier = i.software 
 		    AND i.status = dev.ghostbyte.fedisea.domain.InstanceStatus.ACTIVE 
@@ -55,7 +68,7 @@ interface SoftwareRepository : JpaRepository<Instance, String> {
 	    GROUP BY s.identifier
 """
     )
-    fun getByIdentifier(@Param("search") search: String): SoftwareResponse?
+    fun getByIdentifier(@Param("search") search: String): SoftwareProjection?
 
     @Modifying
     @Transactional

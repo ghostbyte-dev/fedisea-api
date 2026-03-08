@@ -40,14 +40,32 @@ class SoftwareServiceImpl(
                 localComments = it.localComments,
                 joinUrl = it.joinUrl,
                 licence = it.licence,
-                description = it.description
+                description = it.description,
+                iconUrl = "https://assets.fedisea.surf/" + it.iconName
             )
         }
     }
 
     override fun getByIdentifier(identifier: String): SoftwareResponse {
-        return softwareRepository.getByIdentifier(identifier)
+        val projection = softwareRepository.getByIdentifier(identifier)
             ?: throw ResourceNotFoundException("Software", identifier)
+
+        return SoftwareResponse(
+            identifier = projection.identifier,
+            name = projection.name,
+            website = projection.website,
+            sourceCode = projection.sourceCode,
+            instances = projection.instances,
+            activeUsersMonthly = projection.activeUsersMonth,
+            activeUsersHalfyear = projection.activeUsersHalfyear,
+            totalUsers = projection.totalUsers,
+            localPosts = projection.localPosts,
+            localComments = projection.localComments,
+            joinUrl = projection.joinUrl,
+            licence = projection.licence,
+            description = projection.description,
+            iconUrl = "https://assets.fedisea.surf/" + projection.iconName
+        )
     }
 
     @Transactional(readOnly = true)

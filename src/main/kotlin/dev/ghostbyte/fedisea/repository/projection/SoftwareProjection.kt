@@ -8,6 +8,7 @@ interface SoftwareProjection {
     val description: String?
     val licence: String?
     val joinUrl: String?
+    val iconName: String?
     val instances: Long?
     val activeUsersHalfyear: Long?
     val activeUsersMonth: Long?
