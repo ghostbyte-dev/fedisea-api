@@ -38,11 +38,11 @@ interface InstanceRepository : JpaRepository<Instance, String> {
     fun sumTotalUsers(): Long?
 
     @Query("""
-        SELECT i.software, s.name, COUNT(i) 
+        SELECT i.software, MAX(s.name), COUNT(i), MAX(s.iconName)
         FROM Instance i
         LEFT JOIN Software s ON i.software = s.identifier
         WHERE i.status = 'ACTIVE' 
-        GROUP BY i.software, s.name
+        GROUP BY i.software
         ORDER BY COUNT(i) DESC
     """)
     fun countGroupBySoftware(): List<Array<Any>>

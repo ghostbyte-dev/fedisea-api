@@ -79,13 +79,17 @@ class SoftwareServiceImpl(
             val software = row[0] as? String ?: "Unknown"
             val softwareName = row[1] as String?
             val count = row[2] as Long
+            val softwareIcon = row[3] as String?
             val percentage = (count / totalInstances) * 100
 
             SoftwareDistributionResponse(
                 software = software,
                 name = softwareName,
                 count = count,
-                percentage = Math.round(percentage * 100.0) / 100.0
+                percentage = Math.round(percentage * 100.0) / 100.0,
+                softwareLogoUrl = if (softwareIcon != null) {
+                    "https://assets.fedisea.surf/logos/$softwareIcon"
+                } else {null},
             )
         }
 
