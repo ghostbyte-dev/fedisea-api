@@ -126,7 +126,7 @@ class SoftwareServiceImpl(
         if (!Files.exists(rootPath)) Files.createDirectories(rootPath)
 
         val extension = file.originalFilename?.substringAfterLast(".", "png") ?: "png"
-        val fileName = "$identifier.$extension"
+        val fileName = "${identifier.trim()}.${extension.trim()}"
         val destinationPath = rootPath.resolve(fileName)
 
         file.inputStream.use { input ->
