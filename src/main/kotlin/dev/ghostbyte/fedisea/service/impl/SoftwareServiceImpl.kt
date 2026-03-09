@@ -69,39 +69,6 @@ class SoftwareServiceImpl(
     }
 
     @Transactional(readOnly = true)
-    override fun getSoftwareDistribution(limit: Int?): List<SoftwareDistributionResponse> {
-        val rawData = repository.countGroupBySoftware()
-        val totalInstances = repository.countByStatus(InstanceStatus.ACTIVE).toDouble()
-
-        if (totalInstances == 0.0) return emptyList()
-
-        val distribution = rawData.map { row ->
-            val software = row[0] as? String ?: "Unknown"
-            val softwareName = row[1] as String?
-            val count = row[2] as Long
-            val softwareIcon = row[3] as String?
-            val percentage = (count / totalInstances) * 100
-
-            SoftwareDistributionResponse(
-                software = software,
-                name = softwareName,
-                count = count,
-                percentage = Math.round(percentage * 100.0) / 100.0,
-                softwareLogoUrl = if (softwareIcon != null) {
-                    "https://assets.fedisea.surf/logos/$softwareIcon"
-                } else {null},
-            )
-        }
-
-        // Apply the limit if provided, otherwise return the full list
-        return if (limit != null) {
-            distribution.take(limit)
-        } else {
-            distribution
-        }
-    }
-
-    @Transactional(readOnly = true)
     override fun getVersionDistribution(software: String, pageable: Pageable): Page<VersionDistributionResponse> {
         val versionProjections = repository.countGroupByVersionForSoftware(software, pageable)
         val totalForSoftware = repository.countBySoftwareAndStatus(software, InstanceStatus.ACTIVE).toDouble()

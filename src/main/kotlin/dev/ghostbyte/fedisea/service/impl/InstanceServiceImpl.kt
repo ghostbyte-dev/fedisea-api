@@ -1,6 +1,5 @@
 package dev.ghostbyte.fedisea.service.impl
 
-import dev.ghostbyte.fedisea.domain.InstanceStatus
 import dev.ghostbyte.fedisea.dto.InstanceDto
 import dev.ghostbyte.fedisea.dto.StatsResponse
 import dev.ghostbyte.fedisea.exception.ResourceNotFoundException
@@ -31,10 +30,16 @@ class InstanceServiceImpl(
 
     @Transactional(readOnly = true)
     override fun getStats(): StatsResponse {
-        val count = repository.countByStatus(InstanceStatus.ACTIVE)
-        val userCount = repository.sumTotalUsers() ?: 0L
+        val globalCounts = repository.getGlobalCounts()
 
-        return StatsResponse(totalInstances = count, totalUsers = userCount)
+        return StatsResponse(
+            totalInstances = globalCounts.totalInstances,
+            totalUsers = globalCounts.totalUsers,
+            totalActiveUsersMonth = globalCounts.totalActiveUsersMonth,
+            totalActiveUsersHalfYear = globalCounts.totalActiveUsersHalfYear,
+            totalPosts = globalCounts.totalPosts,
+            totalComments = globalCounts.totalComments
+        )
     }
 
 

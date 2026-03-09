@@ -2,6 +2,7 @@ package dev.ghostbyte.fedisea.repository
 
 import dev.ghostbyte.fedisea.domain.Instance
 import dev.ghostbyte.fedisea.domain.InstanceStatus
+import dev.ghostbyte.fedisea.repository.projection.GlobalCountsProjection
 import dev.ghostbyte.fedisea.repository.projection.InstanceProjection
 import dev.ghostbyte.fedisea.repository.projection.VersionProjection
 import org.springframework.data.domain.Page
@@ -18,8 +19,6 @@ interface InstanceRepository : JpaRepository<Instance, String> {
     """)
     fun findByIdWithSoftwareIcon(@Param("domain") domain: String): InstanceProjection?
 
-    fun findAllByStatus(status: InstanceStatus, pageable: Pageable): Page<Instance>
-
     @Query("""
         SELECT i as instance, s.iconName as iconName FROM Instance i 
         JOIN Software s on s.identifier = i.software
@@ -34,18 +33,18 @@ interface InstanceRepository : JpaRepository<Instance, String> {
         pageable: Pageable
     ): Page<InstanceProjection>
 
-    @Query("SELECT SUM(i.totalUsers) FROM Instance i WHERE i.status = dev.ghostbyte.fedisea.domain.InstanceStatus.ACTIVE")
-    fun sumTotalUsers(): Long?
-
     @Query("""
-        SELECT i.software, MAX(s.name), COUNT(i), MAX(s.iconName)
-        FROM Instance i
-        LEFT JOIN Software s ON i.software = s.identifier
-        WHERE i.status = 'ACTIVE' 
-        GROUP BY i.software
-        ORDER BY COUNT(i) DESC
+        SELECT 
+            COUNT(i) as totalInstances,
+            SUM(i.totalUsers) as totalUsers,
+            SUM(i.activeUsersMonth) as totalActiveUsersMonth,
+            SUM(i.activeUsersHalfyear) as totalActiveUsersHalfYear,
+            SUM(i.localPosts) as totalPosts,
+            SUM(i.localComments) as totalComments
+        FROM Instance i 
+        WHERE i.status = dev.ghostbyte.fedisea.domain.InstanceStatus.ACTIVE
     """)
-    fun countGroupBySoftware(): List<Array<Any>>
+    fun getGlobalCounts(): GlobalCountsProjection
 
     @Query(
         """
@@ -60,6 +59,4 @@ interface InstanceRepository : JpaRepository<Instance, String> {
     fun countGroupByVersionForSoftware(@Param("software") software: String, pageable: Pageable): Page<VersionProjection>
 
     fun countBySoftwareAndStatus(software: String, status: InstanceStatus): Long
-
-    fun countByStatus(status: InstanceStatus): Long
 }

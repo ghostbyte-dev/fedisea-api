@@ -26,14 +26,6 @@ import org.springframework.web.multipart.MultipartFile
 class SoftwareController(
     private val service: SoftwareService
 ) {
-
-    @GetMapping("/distribution")
-    fun getSoftwareDistribution(
-        @RequestParam(required = false) limit: Int?
-    ): List<SoftwareDistributionResponse> {
-        return service.getSoftwareDistribution(limit)
-    }
-
     @GetMapping("/{software}/versions")
     fun getVersions(
         @PathVariable software: String,
