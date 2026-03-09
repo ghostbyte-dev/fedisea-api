@@ -43,6 +43,7 @@ interface InstanceRepository : JpaRepository<Instance, String> {
             SUM(i.localComments) as totalComments
         FROM Instance i 
         WHERE i.status = dev.ghostbyte.fedisea.domain.InstanceStatus.ACTIVE
+        AND i.software != 'gotosocial'
     """)
     fun getGlobalCounts(): GlobalCountsProjection
 
