@@ -1,12 +1,13 @@
 package dev.ghostbyte.fedisea.dto
 
 enum class InstanceSort(val apiName: String, val databaseField: String) {
-    USERS("users", "activeUsersMonth"),
+    USERS("users", "totalUsers"),
     ACTIVE_USERS_MONTH("activeUsersMonth", "activeUsersMonth"),
     ACTIVE_USERS_HALFYEAR("activeUsersHalfyear", "activeUsersHalfyear"),
     softwareVersion("softwareVersion", "softwareVersion"),
-    POSTS("posts", "localPosts"),
-    NAME("name", "domain");
+    POSTS("localPosts", "localPosts"),
+    COMMENTS("localComments", "localComments"),
+    NAME("domain", "domain");
 
     companion object {
         fun fromString(value: String): InstanceSort {

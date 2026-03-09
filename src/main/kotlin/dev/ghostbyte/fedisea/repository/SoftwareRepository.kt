@@ -36,6 +36,7 @@ interface SoftwareRepository : JpaRepository<Instance, String> {
         LEFT JOIN Instance i ON s.identifier = i.software 
         AND i.status = 'ACTIVE'
         WHERE (:search = '' OR LOWER(s.name) LIKE LOWER(CONCAT('%', :search, '%')))
+        AND s.identifier != 'gotosocial'
         GROUP BY s.identifier
     """
     )
