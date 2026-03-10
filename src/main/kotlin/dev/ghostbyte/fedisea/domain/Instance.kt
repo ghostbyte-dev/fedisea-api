@@ -12,6 +12,7 @@ class Instance(
     @Column(nullable = false, unique = true)
     val domain: String,
     val title: String?,
+    @Column(columnDefinition = "TEXT")
     val description: String?,
     @Column(name = "source_url")
     val sourceUrl: String?,
