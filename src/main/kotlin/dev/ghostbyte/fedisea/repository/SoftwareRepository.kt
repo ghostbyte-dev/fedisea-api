@@ -14,7 +14,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import java.util.Optional
 
-interface SoftwareRepository : JpaRepository<Instance, String> {
+interface SoftwareRepository : JpaRepository<Software, String> {
     @Query(
         """
         SELECT 
@@ -33,8 +33,7 @@ interface SoftwareRepository : JpaRepository<Instance, String> {
             sum(i.localPosts) as localPosts,
             sum(i.localComments) as localComments
         FROM Software s 
-        LEFT JOIN Instance i ON s.identifier = i.software 
-        AND i.status = 'ACTIVE'
+        LEFT JOIN s.instances i ON i.status = 'ACTIVE'
         WHERE (:search = '' OR LOWER(s.name) LIKE LOWER(CONCAT('%', :search, '%')))
         AND s.identifier != 'gotosocial'
         GROUP BY s.identifier
@@ -63,8 +62,7 @@ interface SoftwareRepository : JpaRepository<Instance, String> {
             sum(i.localPosts) as localPosts,
             sum(i.localComments) as localComments
 	    FROM Software s 
-	    LEFT JOIN Instance i ON s.identifier = i.software 
-		    AND i.status = dev.ghostbyte.fedisea.domain.InstanceStatus.ACTIVE 
+        LEFT JOIN s.instances i ON i.status = 'ACTIVE'
 	    WHERE s.identifier = :search
 	    GROUP BY s.identifier
 """

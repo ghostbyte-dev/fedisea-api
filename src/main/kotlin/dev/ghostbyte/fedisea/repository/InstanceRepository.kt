@@ -13,19 +13,20 @@ import org.springframework.data.repository.query.Param
 
 interface InstanceRepository : JpaRepository<Instance, String> {
     @Query("""
-        SELECT i as instance, s.iconName as iconName FROM Instance i
-        JOIN Software s on s.identifier = i.software
+        SELECT i as instance , i.software.iconName as iconName
+        FROM Instance i 
+        LEFT JOIN FETCH i.software 
         WHERE i.domain = :domain
     """)
     fun findByIdWithSoftwareIcon(@Param("domain") domain: String): InstanceProjection?
 
     @Query("""
-        SELECT i as instance, s.iconName as iconName FROM Instance i 
-        JOIN Software s on s.identifier = i.software
+        SELECT i as instance, i.software.iconName as iconName FROM Instance i 
+        LEFT JOIN FETCH i.software
         WHERE i.status = dev.ghostbyte.fedisea.domain.InstanceStatus.ACTIVE 
-        AND i.software != 'gotosocial' 
+        AND i.software.identifier != 'gotosocial' 
         AND (:search = '' OR LOWER(i.domain) LIKE LOWER(CONCAT('%', :search, '%')))
-        AND (:software = '' OR i.software = :software)
+        AND (:software = '' OR i.software.identifier = :software)
     """)
     fun searchActive(
         @Param("search") search: String,
@@ -43,7 +44,7 @@ interface InstanceRepository : JpaRepository<Instance, String> {
             SUM(i.localComments) as totalComments
         FROM Instance i 
         WHERE i.status = dev.ghostbyte.fedisea.domain.InstanceStatus.ACTIVE
-        AND i.software != 'gotosocial'
+        AND i.software.identifier != 'gotosocial'
     """)
     fun getGlobalCounts(): GlobalCountsProjection
 

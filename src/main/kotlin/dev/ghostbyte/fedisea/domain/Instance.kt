@@ -17,7 +17,6 @@ class Instance(
     @Column(name = "source_url")
     val sourceUrl: String?,
     val thumbnail: String?,
-    val software: String?,
     val email: String?,
     @Column(name = "software_version")
     val softwareVersion: String?,
@@ -39,5 +38,9 @@ class Instance(
     val pointsTo: String?,
     @Column(name = "last_seen", columnDefinition = "TIMESTAMPTZ DEFAULT NOW()")
     @NotNull
-    val lastSeen: OffsetDateTime
+    val lastSeen: OffsetDateTime,
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "software_id")
+    val software: Software,
 )

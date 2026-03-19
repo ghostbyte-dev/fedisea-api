@@ -1,8 +1,10 @@
 package dev.ghostbyte.fedisea.domain
 
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 
 @Entity
@@ -10,7 +12,7 @@ import jakarta.persistence.Table
 class Software(
     @Id
     val identifier: String,
-    val name: String,
+    val name: String? = null,
     val website: String? = null,
     @Column(name = "soure_code")
     val sourceCode: String? = null,
@@ -20,4 +22,7 @@ class Software(
     val joinUrl: String? = null,
     @Column(name = "icon_name")
     val iconName: String? = null,
+
+    @OneToMany(mappedBy = "software", cascade = [CascadeType.PERSIST, CascadeType.MERGE])
+    val instances: MutableList<Instance> = mutableListOf(),
 )

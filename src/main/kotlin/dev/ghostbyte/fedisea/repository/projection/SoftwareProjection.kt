@@ -2,7 +2,7 @@ package dev.ghostbyte.fedisea.repository.projection
 
 interface SoftwareProjection {
     val identifier: String
-    val name: String
+    val name: String?
     val website: String?
     val sourceCode: String?
     val description: String?

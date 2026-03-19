@@ -6,7 +6,7 @@ import dev.ghostbyte.fedisea.repository.projection.InstanceProjection
 
 fun Instance.toDto() = InstanceDto(
     domain = domain,
-    software = software,
+    software = software.identifier,
     version = softwareVersion,
     openRegistration = openRegistration,
     totalUsers = totalUsers,
@@ -23,7 +23,7 @@ fun Instance.toDto() = InstanceDto(
 
 fun InstanceProjection.toDto() = InstanceDto(
     domain = instance.domain,
-    software = instance.software,
+    software = instance.software.identifier,
     version = instance.softwareVersion,
     openRegistration = instance.openRegistration,
     totalUsers = instance.totalUsers,
