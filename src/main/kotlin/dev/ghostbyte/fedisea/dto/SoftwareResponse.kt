@@ -10,7 +10,7 @@ data class SoftwareResponse(
     val joinUrl: String?,
     val instances: Long?,
     val activeUsersHalfyear: Long?,
-    val activeUsersMonthly: Long?,
+    val activeUsersMonth: Long?,
     val totalUsers: Long?,
     val localPosts: Long?,
     val localComments: Long?,

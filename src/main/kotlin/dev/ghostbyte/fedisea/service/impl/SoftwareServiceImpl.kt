@@ -5,6 +5,7 @@ import dev.ghostbyte.fedisea.dto.SoftwareDistributionResponse
 import dev.ghostbyte.fedisea.dto.SoftwareResponse
 import dev.ghostbyte.fedisea.dto.VersionDistributionResponse
 import dev.ghostbyte.fedisea.exception.ResourceNotFoundException
+import dev.ghostbyte.fedisea.mapper.toResponse
 import dev.ghostbyte.fedisea.repository.InstanceRepository
 import dev.ghostbyte.fedisea.repository.SoftwareRepository
 import dev.ghostbyte.fedisea.service.SoftwareService
@@ -27,22 +28,7 @@ class SoftwareServiceImpl(
         val result =  softwareRepository.search(search, pageable) ?: throw ResourceNotFoundException("Software", search);
 
         return result.map {
-            SoftwareResponse(
-                identifier = it.identifier,
-                name = it.name,
-                website = it.website,
-                sourceCode = it.sourceCode,
-                instances = it.instances,
-                activeUsersMonthly = it.activeUsersMonth,
-                activeUsersHalfyear = it.activeUsersHalfyear,
-                totalUsers = it.totalUsers,
-                localPosts = it.localPosts,
-                localComments = it.localComments,
-                joinUrl = it.joinUrl,
-                licence = it.licence,
-                description = it.description,
-                iconUrl = if (it.iconName != null) {"https://assets.fedisea.surf/logos/" + it.iconName} else {null}
-            )
+            it.toResponse()
         }
     }
 
@@ -50,22 +36,7 @@ class SoftwareServiceImpl(
         val projection = softwareRepository.getByIdentifier(identifier)
             ?: throw ResourceNotFoundException("Software", identifier)
 
-        return SoftwareResponse(
-            identifier = projection.identifier,
-            name = projection.name,
-            website = projection.website,
-            sourceCode = projection.sourceCode,
-            instances = projection.instances,
-            activeUsersMonthly = projection.activeUsersMonth,
-            activeUsersHalfyear = projection.activeUsersHalfyear,
-            totalUsers = projection.totalUsers,
-            localPosts = projection.localPosts,
-            localComments = projection.localComments,
-            joinUrl = projection.joinUrl,
-            licence = projection.licence,
-            description = projection.description,
-            iconUrl = if (projection.iconName != null) {"https://assets.fedisea.surf/logos/" + projection.iconName} else {null}
-        )
+        return projection.toResponse()
     }
 
     @Transactional(readOnly = true)
