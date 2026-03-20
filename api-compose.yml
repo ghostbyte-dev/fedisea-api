@@ -1,13 +1,8 @@
 services:
   fedisea-api:
     image: ghcr.io/ghostbyte-dev/fedisea-api:latest
-    ports:
-      - "8080:8080"
     env_file:
       - .env
-    environment:
-      - JAVA_OPTS=-Xss512k -XX:ReservedCodeCacheSize=64M -XX:MaxMetaspaceSize=100M
-      - BPL_JVM_THREAD_COUNT=20
     networks:
       - fedisea-network
       - proxy-network

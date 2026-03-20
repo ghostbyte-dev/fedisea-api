@@ -14,7 +14,7 @@ class WebConfig {
             override fun addCorsMappings(registry: CorsRegistry) {
                 registry.addMapping("/**")
                     .allowedOrigins("*")
-                    .allowedMethods("GET", "OPTIONS")
+                    .allowedMethods("GET")
                     .allowedHeaders("*")
             }
         }
