@@ -28,7 +28,8 @@ fun Instance.toDto() = InstanceDto(
     sourceUrl = sourceUrl,
     thumbnail = thumbnail,
     softwareLogoUrl = null,
-    protocols = protocols.map { it.toDto() }
+    protocols = protocols.map { it.toDto() },
+    metadata = metadata
 )
 
 fun InstanceProjection.toDto() = InstanceDto(
@@ -46,5 +47,6 @@ fun InstanceProjection.toDto() = InstanceDto(
     sourceUrl = instance.sourceUrl,
     thumbnail = instance.thumbnail,
     softwareLogoUrl = iconName?.let { "https://assets.fedisea.surf/logos/$it" },
-    protocols = instance.protocols.map { it.toDto() }
+    protocols = instance.protocols.map { it.toDto() },
+    metadata = instance.metadata
 )

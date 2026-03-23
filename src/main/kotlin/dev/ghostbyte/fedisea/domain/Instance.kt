@@ -1,7 +1,10 @@
 package dev.ghostbyte.fedisea.domain
 
 import jakarta.persistence.*
+import org.hibernate.annotations.JdbcTypeCode
+import org.hibernate.type.SqlTypes
 import org.jetbrains.annotations.NotNull
+import tools.jackson.databind.JsonNode
 import java.time.OffsetDateTime
 import java.time.OffsetTime
 
@@ -39,6 +42,10 @@ class Instance(
     @Column(name = "last_seen", columnDefinition = "TIMESTAMPTZ DEFAULT NOW()")
     @NotNull
     val lastSeen: OffsetDateTime,
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb")
+    val metadata: JsonNode? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "software_id")

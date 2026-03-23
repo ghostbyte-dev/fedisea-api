@@ -1,5 +1,7 @@
 package dev.ghostbyte.fedisea.dto
 
+import tools.jackson.databind.JsonNode
+
 data class InstanceDto(
     val domain: String,
     val title: String?,
@@ -15,5 +17,6 @@ data class InstanceDto(
     val activeUsersHalfyear: Long?,
     val localPosts: Long?,
     val localComments: Long?,
-    val softwareLogoUrl: String?
+    val softwareLogoUrl: String?,
+    val metadata: JsonNode?
 )
