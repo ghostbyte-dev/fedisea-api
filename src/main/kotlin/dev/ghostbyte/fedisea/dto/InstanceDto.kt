@@ -18,6 +18,9 @@ data class InstanceDto(
     val localPosts: Long?,
     val localComments: Long?,
     val softwareLogoUrl: String?,
+    val country: String?,
+    val city: String?,
+    val asnName: String?,
     @JsonRawValue
     val metadata: String?
 )

@@ -29,24 +29,8 @@ fun Instance.toDto() = InstanceDto(
     thumbnail = thumbnail,
     softwareLogoUrl = software.iconName?.let { "https://assets.fedisea.surf/logos/$it" },
     protocols = protocols.map { it.toDto() },
+    country = country,
+    city = city,
+    asnName = asnName,
     metadata = metadata?.toString()
-)
-
-fun InstanceProjection.toDto() = InstanceDto(
-    domain = instance.domain,
-    software = instance.software.identifier,
-    version = instance.softwareVersion,
-    openRegistration = instance.openRegistration,
-    totalUsers = instance.totalUsers,
-    activeUsersMonth = instance.activeUsersMonth,
-    activeUsersHalfyear = instance.activeUsersHalfyear,
-    localPosts = instance.localPosts,
-    localComments = instance.localComments,
-    title = instance.title,
-    description = instance.description,
-    sourceUrl = instance.sourceUrl,
-    thumbnail = instance.thumbnail,
-    softwareLogoUrl = iconName?.let { "https://assets.fedisea.surf/logos/$it" },
-    protocols = instance.protocols.map { it.toDto() },
-    metadata = instance.metadata?.toString()
 )
