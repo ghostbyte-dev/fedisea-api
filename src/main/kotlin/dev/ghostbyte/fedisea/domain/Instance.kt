@@ -43,4 +43,12 @@ class Instance(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "software_id")
     val software: Software,
+
+    @ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
+    @JoinTable(
+        name = "instance_protocol",
+        joinColumns = [JoinColumn(name = "instance_id")],
+        inverseJoinColumns = [JoinColumn(name = "protocol_id")]
+    )
+    val protocols: MutableSet<Protocol> = mutableSetOf()
 )

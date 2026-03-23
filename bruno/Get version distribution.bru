@@ -5,9 +5,13 @@ meta {
 }
 
 get {
-  url: {{baseurl}}/v1/stats/software/pixelfed/versions
+  url: {{baseurl}}/v1/software/mastodon/versions?size=2
   body: none
   auth: inherit
+}
+
+params:query {
+  size: 2
 }
 
 settings {

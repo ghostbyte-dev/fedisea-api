@@ -16,6 +16,7 @@ interface InstanceRepository : JpaRepository<Instance, String> {
         SELECT i as instance , i.software.iconName as iconName
         FROM Instance i 
         LEFT JOIN FETCH i.software 
+        LEFT JOIN FETCH i.protocols 
         WHERE i.domain = :domain
     """)
     fun findByIdWithSoftwareIcon(@Param("domain") domain: String): InstanceProjection?
@@ -23,6 +24,7 @@ interface InstanceRepository : JpaRepository<Instance, String> {
     @Query("""
         SELECT i as instance, i.software.iconName as iconName FROM Instance i 
         LEFT JOIN FETCH i.software
+        LEFT JOIN FETCH i.protocols 
         WHERE i.status = dev.ghostbyte.fedisea.domain.InstanceStatus.ACTIVE 
         AND i.software.identifier != 'gotosocial' 
         AND (:search = '' OR LOWER(i.domain) LIKE LOWER(CONCAT('%', :search, '%')))

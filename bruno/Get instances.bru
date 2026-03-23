@@ -5,15 +5,16 @@ meta {
 }
 
 get {
-  url: {{baseurl}}/v1/instances?sort=softwareVersion&software=mastodon&order=asc
+  url: {{baseurl}}/v1/instances?size=1
   body: none
   auth: inherit
 }
 
 params:query {
-  sort: softwareVersion
-  software: mastodon
-  order: asc
+  size: 1
+  ~sort: softwareVersion
+  ~software: mastodon
+  ~order: asc
   ~search: pixelix
 }
 

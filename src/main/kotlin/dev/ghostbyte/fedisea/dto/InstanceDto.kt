@@ -8,6 +8,7 @@ data class InstanceDto(
     val thumbnail: String?,
     val software: String?,
     val version: String?,
+    val protocols: List<ProtocolDto>,
     val openRegistration: Boolean?,
     val totalUsers: Long?,
     val activeUsersMonth: Long?,

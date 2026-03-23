@@ -1,13 +1,17 @@
 meta {
-  name: Get software distribution
+  name: Get Softwares
   type: http
-  seq: 5
+  seq: 8
 }
 
 get {
-  url: {{baseurl}}/v1/stats/software
+  url: {{baseurl}}/v1/software?size=1
   body: none
   auth: inherit
+}
+
+params:query {
+  size: 1
 }
 
 settings {

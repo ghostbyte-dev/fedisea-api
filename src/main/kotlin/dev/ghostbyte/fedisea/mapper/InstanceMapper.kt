@@ -1,8 +1,17 @@
 package dev.ghostbyte.fedisea.mapper
 
 import dev.ghostbyte.fedisea.domain.Instance
+import dev.ghostbyte.fedisea.domain.Protocol
 import dev.ghostbyte.fedisea.dto.InstanceDto
+import dev.ghostbyte.fedisea.dto.ProtocolDto
 import dev.ghostbyte.fedisea.repository.projection.InstanceProjection
+
+fun Protocol.toDto() = ProtocolDto(
+    identifier = identifier,
+    name = name,
+    description = description,
+    website = homepage
+)
 
 fun Instance.toDto() = InstanceDto(
     domain = domain,
@@ -18,7 +27,8 @@ fun Instance.toDto() = InstanceDto(
     description = description,
     sourceUrl = sourceUrl,
     thumbnail = thumbnail,
-    softwareLogoUrl = null
+    softwareLogoUrl = null,
+    protocols = protocols.map { it.toDto() }
 )
 
 fun InstanceProjection.toDto() = InstanceDto(
@@ -35,7 +45,6 @@ fun InstanceProjection.toDto() = InstanceDto(
     description = instance.description,
     sourceUrl = instance.sourceUrl,
     thumbnail = instance.thumbnail,
-    softwareLogoUrl = if (iconName != null) {
-        "https://assets.fedisea.surf/logos/$iconName"
-    } else {null},
+    softwareLogoUrl = iconName?.let { "https://assets.fedisea.surf/logos/$it" },
+    protocols = instance.protocols.map { it.toDto() }
 )
