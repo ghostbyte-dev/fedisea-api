@@ -46,6 +46,7 @@ class InstanceController(
     fun getInstanceByDomain(
         @PathVariable domain: String
     ): InstanceDto {
-        return service.getByDomain(domain)
+        val result = service.getByDomain(domain)
+        return result;
     }
 }

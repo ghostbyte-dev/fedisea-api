@@ -1,7 +1,6 @@
 package dev.ghostbyte.fedisea.dto
 
-import com.fasterxml.jackson.databind.JsonNode
-
+import com.fasterxml.jackson.annotation.JsonRawValue
 
 data class InstanceDto(
     val domain: String,
@@ -19,5 +18,6 @@ data class InstanceDto(
     val localPosts: Long?,
     val localComments: Long?,
     val softwareLogoUrl: String?,
-    val metadata: JsonNode?
+    @JsonRawValue
+    val metadata: String?
 )
