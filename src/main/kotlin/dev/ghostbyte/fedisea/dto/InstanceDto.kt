@@ -1,6 +1,7 @@
 package dev.ghostbyte.fedisea.dto
 
-import tools.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.JsonNode
+
 
 data class InstanceDto(
     val domain: String,
