@@ -27,7 +27,7 @@ fun Instance.toDto() = InstanceDto(
     description = description,
     sourceUrl = sourceUrl,
     thumbnail = thumbnail,
-    softwareLogoUrl = null,
+    softwareLogoUrl = software.iconName?.let { "https://assets.fedisea.surf/logos/$it" },
     protocols = protocols.map { it.toDto() },
     metadata = metadata
 )

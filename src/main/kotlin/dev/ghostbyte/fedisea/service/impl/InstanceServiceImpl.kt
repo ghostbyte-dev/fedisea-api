@@ -24,7 +24,7 @@ class InstanceServiceImpl(
 
     @Transactional(readOnly = true)
     override fun getByDomain(domain: String): InstanceDto {
-        val result = repository.findByIdWithSoftwareIcon(domain) ?: throw ResourceNotFoundException("Instance", domain)
+        val result = repository.findFirstByDomain(domain) ?: throw ResourceNotFoundException("Instance", domain)
         return result.toDto()
     }
 

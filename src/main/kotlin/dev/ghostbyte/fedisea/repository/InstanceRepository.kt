@@ -7,24 +7,17 @@ import dev.ghostbyte.fedisea.repository.projection.InstanceProjection
 import dev.ghostbyte.fedisea.repository.projection.VersionProjection
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.repository.EntityGraph
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
 interface InstanceRepository : JpaRepository<Instance, String> {
-    @Query("""
-        SELECT i as instance , i.software.iconName as iconName
-        FROM Instance i 
-        LEFT JOIN FETCH i.software 
-        LEFT JOIN FETCH i.protocols 
-        WHERE i.domain = :domain
-    """)
-    fun findByIdWithSoftwareIcon(@Param("domain") domain: String): InstanceProjection?
+
+    fun findFirstByDomain(domain: String): Instance?
 
     @Query("""
-        SELECT i as instance, i.software.iconName as iconName FROM Instance i 
-        LEFT JOIN FETCH i.software
-        LEFT JOIN FETCH i.protocols 
+        SELECT DISTINCT i as instance FROM Instance i 
         WHERE i.status = dev.ghostbyte.fedisea.domain.InstanceStatus.ACTIVE 
         AND i.software.identifier != 'gotosocial' 
         AND (:search = '' OR LOWER(i.domain) LIKE LOWER(CONCAT('%', :search, '%')))
@@ -34,7 +27,7 @@ interface InstanceRepository : JpaRepository<Instance, String> {
         @Param("search") search: String,
         @Param("software") software: String,
         pageable: Pageable
-    ): Page<InstanceProjection>
+    ): Page<Instance>
 
     @Query("""
         SELECT 
