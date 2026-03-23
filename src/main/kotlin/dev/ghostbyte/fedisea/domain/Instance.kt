@@ -39,6 +39,15 @@ class Instance(
     val status: InstanceStatus?,
     @Column(name = "points_to")
     val pointsTo: String?,
+
+    @Column
+    val country: String?,
+    @Column
+    val city: String?,
+    @Column(name = "asn_name")
+    val asnName: String?,
+
+
     @Column(name = "last_seen", columnDefinition = "TIMESTAMPTZ DEFAULT NOW()")
     @NotNull
     val lastSeen: OffsetDateTime,
