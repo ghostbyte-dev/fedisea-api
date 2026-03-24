@@ -32,5 +32,6 @@ fun Instance.toDto() = InstanceDto(
     country = country,
     city = city,
     asnName = asnName,
-    metadata = metadata?.toString()
+    metadata = metadata?.toString(),
+    lastSeen = lastSeen
 )

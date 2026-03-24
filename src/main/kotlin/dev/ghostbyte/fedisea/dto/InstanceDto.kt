@@ -1,6 +1,7 @@
 package dev.ghostbyte.fedisea.dto
 
 import com.fasterxml.jackson.annotation.JsonRawValue
+import java.time.OffsetDateTime
 
 data class InstanceDto(
     val domain: String,
@@ -22,5 +23,6 @@ data class InstanceDto(
     val city: String?,
     val asnName: String?,
     @JsonRawValue
-    val metadata: String?
+    val metadata: String?,
+    val lastSeen: OffsetDateTime
 )
