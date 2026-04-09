@@ -17,7 +17,6 @@ interface InstanceRepository : JpaRepository<Instance, String> {
     @Query("""
         SELECT DISTINCT i as instance FROM Instance i 
         WHERE i.status = dev.ghostbyte.fedisea.domain.InstanceStatus.ACTIVE 
-        AND i.software.identifier != 'gotosocial' 
         AND (:search = '' OR LOWER(i.domain) LIKE LOWER(CONCAT('%', :search, '%')))
         AND (:software = '' OR i.software.identifier = :software)
     """)
@@ -37,7 +36,6 @@ interface InstanceRepository : JpaRepository<Instance, String> {
             SUM(i.localComments) as totalComments
         FROM Instance i 
         WHERE i.status = dev.ghostbyte.fedisea.domain.InstanceStatus.ACTIVE
-        AND i.software.identifier != 'gotosocial'
     """)
     fun getGlobalCounts(): GlobalCountsProjection
 
