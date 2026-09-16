@@ -35,6 +35,7 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation(kotlin("stdlib"))
 }
 
 kotlin {
