@@ -8,7 +8,7 @@ services:
       - proxy-network
     volumes:
       - fedisea_icons:/app/icons
-    restart: always
+    restart: unless-stopped
 
   icon-server:
     image: nginx:alpine
@@ -17,6 +17,7 @@ services:
       - fedisea_icons:/usr/share/nginx/html:ro
     networks:
       - proxy-network
+    restart: unless-stopped
 
 volumes:
   fedisea_icons:

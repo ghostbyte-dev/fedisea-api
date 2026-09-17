@@ -12,6 +12,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - fedisea-network
+    restart: unless-stopped
 
 volumes:
   postgres_data:
